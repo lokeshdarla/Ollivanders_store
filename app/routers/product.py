@@ -7,7 +7,7 @@ from .. import utils
 
 router = APIRouter(
     prefix="/products",
-    tags=["Users"]
+    tags=["Products"]
 )
 
 @router.get("/", response_model=List[schemas.ProductBase])

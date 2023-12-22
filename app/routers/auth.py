@@ -19,4 +19,3 @@ def login(user_cred: schemas.UserLogin,db:Session=Depends(get_db)):
 
     access_token=oauth2.create_access_token(data={"id":user.id})
     return({"access_token":access_token,"token_type":"Bearer","id":user.id})
-

@@ -37,6 +37,7 @@ class TokenData(BaseModel):
 
 
 class ProductBase(BaseModel):
+    ProductID:int
     ProductName: str
     Description: str
     Price: float
@@ -48,3 +49,34 @@ class ProductCreate(ProductBase):
 
 class ProductUpdate(ProductBase):
     pass
+
+class CartProduct(BaseModel):
+    ProductName: str
+    Description: str
+    Price: float
+
+
+class CartBase(BaseModel):
+    ProductID: int
+    Quantity: int
+
+class CartCreate(CartBase):
+    pass
+
+class CartUpdate(BaseModel):
+    CartID:int
+    Quantity: int
+
+class CartDelete(BaseModel):
+    CartID:int
+
+class CartProduct(BaseModel):
+    ProductName: str
+    Description: str
+    Price: float
+
+class CartOut(BaseModel):
+    CartID:int
+    ProductID: int
+    Quantity: int
+    Product_info:CartProduct
