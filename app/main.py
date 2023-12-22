@@ -3,7 +3,7 @@ from .import models
 from .database import engine
 #from .routers import todo,user,auth,post,vote
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import user,auth
+from .routers import user,auth,product
 
 origins = [
     "*"
@@ -21,3 +21,4 @@ app.add_middleware(
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(product.router)

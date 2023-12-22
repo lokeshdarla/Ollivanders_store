@@ -8,6 +8,7 @@ class UserBase(BaseModel):
     
 class UserCreate(UserBase):
     email:str
+    is_admin: bool = False
 
 class UserUpdate(BaseModel):
     email:str
@@ -30,3 +31,20 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
      id:int
+
+
+
+
+
+class ProductBase(BaseModel):
+    ProductName: str
+    Description: str
+    Price: float
+    units: int
+    in_stock: bool
+
+class ProductCreate(ProductBase):
+    pass
+
+class ProductUpdate(ProductBase):
+    pass
