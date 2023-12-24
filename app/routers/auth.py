@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 
 router=APIRouter(
+    
     tags=["Authentication"]
 )
 
@@ -17,5 +18,5 @@ def login(user_cred: schemas.UserLogin,db:Session=Depends(get_db)):
     if not utils.verfiy(user_cred.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid Credentials")
 
-    access_token=oauth2.create_access_token(data={"id":user.id})
-    return({"access_token":access_token,"token_type":"Bearer","id":user.id})
+    access_token=oauth2.create_access_token(data={"id":user.id,"username":user.username,"email":user.username})
+    return({"accessToken":access_token})
