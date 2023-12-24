@@ -12,8 +12,8 @@ export default function Header() {
   const { user, logout } = UserInfo();
   const navigation = useNavigate();
   return (
-    <header className="px-10 shadow w-full bg-white absolute">
-      <nav className="bg-white border-gray-200 px-4 lg:px-6 py-1.5 sticky top-0 z-50">
+    <header className="p-10 shadow w-full bg-transparent absolute bg-black">
+      <nav className=" border-gray-200 px-4 lg:px-6 py-1.5 sticky top-0 z-50">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex content-end text-[#740001] text-lg gap-2">
             <Wand2 />
@@ -22,10 +22,9 @@ export default function Header() {
           <div className='w-3/6'>
             <SearchForm/>
           </div>
-          <div className="flex items-center gap-10">
-            {user ? (
-              <div className="flex space-x-2 items-center">
-                <Link className='flex gap-2 text-center justify-center items-center'><ShoppingBasket size={32}/><span>Cart</span></Link>
+            {!user ? (
+              <div className="flex space-x-2 gap-10">
+                <Link className='flex gap-2 text-center justify-center items-center text-white hover:text-[#740001] '><ShoppingBasket size={32}/><span>Cart</span></Link>
                 <button
                   onClick={logout}
                 >
@@ -44,8 +43,6 @@ export default function Header() {
                 Login
               </button>
             )}
-
-          </div>
         </div>
       </nav>
     </header>

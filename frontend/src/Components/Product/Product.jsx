@@ -46,21 +46,20 @@ const wands = [
 const Product = () => {
   return (
     <>
-      <section className="flex-col gap-2 w-full">
-        <h1 className="text-center font-semibold text-5xl m-3">New Deal's</h1>
+      <section className="flex-col gap-2 w-full bg-black" style={{ fontFamily: 'Metal-Mania' }}>
         <div className="flex flex-wrap gap-2 justify-center items-center">
           {wands.map((wand) => (
-            <div key={wand.id} className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+            <div key={wand.id} className="w-full max-w-sm bg-black border border-gray-200 rounded-lg shadow flex-col items-center">
               <a href="#">
-                <img className="w-96 h-96 object-fit rounded-t-lg transform transition-transform hover:scale-105" src={wand.image} alt="product image" />
+                <img className="h-80 object-fit rounded-t-lg transform transition-transform hover:scale-105" src={wand.image} alt="product image" />
               </a>
               <div className="px-5 pb-5">
                 <a href="#">
-                  <h5 className="text-xl font-semibold tracking-tight text-gray-900">{wand.name}</h5>
+                  <h5 className="text-xl font-semibold tracking-tight text-white">{wand.name}</h5>
                 </a>
                 <br />
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-bold text-gray-900 ">{wand.price}</span>
+                  <span className="text-3xl font-bold text-white">{wand.price}</span>
                   <CartButton />
                 </div>
               </div>
