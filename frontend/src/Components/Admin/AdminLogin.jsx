@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert/Alert';
-import { useNavigate } from 'react-router-dom';
 
-function LoginSection() {
-  const navigation = useNavigate();
+function AdminLogin() {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState(null);
@@ -36,11 +35,11 @@ function LoginSection() {
         setAlert({ type: 'success', message: 'Login successful!' });
 
         // // Store JWT token in local storage
-        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('AdminToken', data.accessToken);
         setLoggedIn(true);
 
         // Navigate to '/user' after successful login
-        navigation('/');
+        window.location.reload();
       } else {
         // Handle login error
         const errorData = await response.json();
@@ -66,7 +65,7 @@ function LoginSection() {
       <div className="w-full rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-[#740001] md:text-2xl text-center">
-            Welcome back to Ollivanders
+            Welcome Admin
           </h1>
           {alert && <Alert type={alert.type} message={alert.message} />}
           <form className="space-y-4 md:space-y-6" action="#">
@@ -75,7 +74,7 @@ function LoginSection() {
                 Your Username
               </label>
               <input
-                type="text"
+                 type="password"
                 name="email"
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
@@ -120,4 +119,4 @@ function LoginSection() {
   );
 }
 
-export default LoginSection;
+export default AdminLogin;

@@ -26,7 +26,7 @@ const SearchForm = () => {
       />
       <button
         type="submit"
-        className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-[#740001] rounded-e-lg"
+        className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white shadow-inner bg-[#C07F00]/90 rounded-e-lg"
       >
       <Search/>
       </button>

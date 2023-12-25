@@ -12,19 +12,19 @@ export default function Header() {
   const { user, logout } = UserInfo();
   const navigation = useNavigate();
   return (
-    <header className="p-10 shadow w-full bg-transparent absolute bg-black">
-      <nav className=" border-gray-200 px-4 lg:px-6 py-1.5 sticky top-0 z-50">
+    <header className="p-10 shadow w-full sticky bg-transparent">
+      <nav className=" border-gray-200 px-4 lg:px-6 py-1.5">
         <div className="flex justify-between items-center">
-          <Link to="/" className="flex content-end text-[#740001] text-lg gap-2">
-            <Wand2 />
+          <Link to="/" className="flex content-end text-[#C07F00]/90 text-lg gap-2">
+            <Wand2/>
             <img className='h-8' src={logo} alt="" />
           </Link>
           <div className='w-3/6'>
             <SearchForm/>
           </div>
-            {!user ? (
+            {user ? (
               <div className="flex space-x-2 gap-10">
-                <Link className='flex gap-2 text-center justify-center items-center text-white hover:text-[#740001] '><ShoppingBasket size={32}/><span>Cart</span></Link>
+                <Link  to="/cart" className='flex gap-2 text-center justify-center items-center text-white hover:text-[#C07F00]/90'><ShoppingBasket size={32}/><span>Cart</span></Link>
                 <button
                   onClick={logout}
                 >
@@ -37,7 +37,7 @@ export default function Header() {
               </div>
             ) : (
               <button
-                className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-[#740001] focus:ring-4 focus:ring-[#740001] hover:bg-white hover:text-[#740001]"
+                className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00]"
                 onClick={() => navigation("/login")}
               >
                 Login
