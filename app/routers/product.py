@@ -1,5 +1,6 @@
-from fastapi import Body, APIRouter, Depends, HTTPException, status
+from fastapi import Body, APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
+from base64 import b64encode,b64decode
 from typing import List
 from ..database import get_db
 from .. import schemas, models, oauth2
@@ -15,13 +16,29 @@ def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     products = db.query(models.Product).offset(skip).limit(limit).all()
     return products
 
-@router.post("/", response_model=schemas.ProductBase,status_code=status.HTTP_201_CREATED)
+@router.post("/",response_model=schemas.ProductCreate,status_code=status.HTTP_201_CREATED)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
     db_product = models.Product(**product.dict())
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
     return db_product
+
+@router.post("/uploadImage",status_code=status.HTTP_201_CREATED)
+async def upload_image(image: UploadFile = File(...), db: Session = Depends(get_db)):
+    try:
+        contents = await image.read()
+
+        print(contents)
+        db_image = models.ProductImage(Image=contents)
+        db.add(db_image)
+        db.commit()
+        db.refresh(db_image)
+
+
+        return {"image_id": db_image.ImageID}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 @router.get("/{product_id}", response_model=schemas.ProductBase)
 def read_product(product_id: int, db: Session = Depends(get_db)):

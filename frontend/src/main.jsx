@@ -9,6 +9,7 @@ import LoginSection from './Components/Login/Login.jsx';
 import ShoppingCartPage from './Components/Cart/Cart.jsx';
 import Sidebar from './Components/Admin/AdminSidebar.jsx';
 import AdminLayout from './Components/Admin/AdminLayout.jsx';
+import ProductForm from './Components/Admin/ProductForm.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

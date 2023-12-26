@@ -1,6 +1,7 @@
-from pydantic import BaseModel,conint
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from fastapi import UploadFile
 
 class UserBase(BaseModel):
     username:str
@@ -35,12 +36,14 @@ class TokenData(BaseModel):
 
 
 class ProductBase(BaseModel):
-    ProductID:int
     ProductName: str
     Description: str
     Price: float
     units: int
-    in_stock: bool
+    ImageID:int
+
+    class Config:
+        orm_mode = True
 
 class ProductCreate(ProductBase):
     pass

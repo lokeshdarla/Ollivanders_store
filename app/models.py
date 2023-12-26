@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, text,ForeignKey,VARCHAR,DECIMAL
+from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, text,ForeignKey,VARCHAR,DECIMAL,LargeBinary
 from .database import Base
 from sqlalchemy.orm import relationship
 
@@ -14,16 +14,23 @@ class User(Base):
     created_at=Column(TIMESTAMP,nullable=False,server_default=text('now()'))
     is_admin = Column(Boolean, default=False)
 
+
+class ProductImage(Base):
+    __tablename__ = 'ProductsImages'
+
+    ImageID = Column(Integer, primary_key=True, autoincrement=True)
+    Image = Column(LargeBinary)
+
 class Product(Base):
     __tablename__ = 'Products'
 
     ProductID = Column(Integer, primary_key=True, autoincrement=True)
-    ProductName = Column(String)
-    Description = Column(String)
+    ProductName = Column(String, nullable=False)
+    Description = Column(String, nullable=False)
     Price = Column(DECIMAL(10, 2))
-    units=Column(Integer,nullable=False)
-    in_stock=Column(Boolean,unique=False)
-    # Add other fields as needed
+    units = Column(Integer, nullable=False)
+    ImageID = Column(Integer, ForeignKey('ProductsImages.ImageID'))
+
 
 class Cart(Base):
     __tablename__ = 'cart'

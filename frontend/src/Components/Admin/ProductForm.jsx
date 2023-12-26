@@ -1,56 +1,177 @@
-import React, { useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import React, { useState } from "react";
 
-const ProductForm = ({ addProduct }) => {
+const ProductForm = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [image_id,setImageID]=useState(0)
   const [product, setProduct] = useState({
-    productName: '',
-    description: '',
-    price: '',
-    quantity: '',
-    image: null, // Use null for initial state of image
+    ProductName: '',
+    Description: '',
+    Price: 0,
+    units: 0,
   });
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    // If the input is a file input, use the selected file
-    const file = name === 'image' ? files[0] : null;
-
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: file || value,
-    }));
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file);
   };
+  
+  const handleImageUpload = async () => {
+    try {
+      const formData = new FormData();
+     formData.append('image', selectedImage);
+     console.log(selectedImage)
+      console.log(formData);
+      const response = await fetch("http://127.0.0.1:8000/products/uploadImage", {
+        method: "POST",
+        body: formData,
+      });
 
-  const handleSubmit = (e) => {
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result)
+         const ImageID= result.image_id
+        setImageID(ImageID)
+      } else {
+        console.error("Failed to upload image:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+  
+  
+  
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addProduct({ ...product, id: uuid() });
+
+    await handleImageUpload();
+    console.log(JSON.stringify({ ...product }))
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/products/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "ProductName": product.ProductName,
+          "Description": product.Description,
+          "Price": product.Price,
+          "units": product.units,
+          "ImageID": image_id
+        } ),
+      });
+  
+      if (response.ok) {
+        console.log('Product added successfully!');
+        alert('Product added Successfully');
+      } else {
+        console.error('Failed to add product:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding product:', error);
+    }
+  
+    // Reset the form fields after submission
     setProduct({
-      productName: '',
-      description: '',
-      price: '',
-      quantity: '',
-      image: null,
+      ProductName: '',
+      Description: '',
+      Price: 0,
+      units: 0,
+      ImageID: '',
     });
+    setSelectedImage(null);
   };
+  
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-4 p-4 bg-white rounded-md shadow-md">
-      {/* ... other form inputs ... */}
+    <form onSubmit={handleSubmit} className="w-full mx-auto m-4 p-4 bg-white">
+      <div>
+      </div>
       <div className="mb-4">
-        <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="ProductName" className="block text-sm font-medium text-gray-700">
+          Product Name
+        </label>
+        <input
+          type="text"
+          id="ProductName"
+          name="ProductName"
+          value={product.ProductName}
+          onChange={(e) => setProduct({...product, ProductName: e.target.value})}
+          required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          id="Description"
+          name="Description"
+          value={product.Description}
+          onChange={(e) => setProduct({...product, Description: e.target.value})}
+          required
+          rows="3"
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+        ></textarea>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="Price" className="block text-sm font-medium text-gray-700">
+          Price
+        </label>
+        <input
+          type="number"
+          id="Price"
+          name="Price"
+          value={product.Price}
+          onChange={(e) => setProduct({...product, Price: parseFloat(e.target.value)})}
+          required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="units" className="block text-sm font-medium text-gray-700">
+          Quantity
+        </label>
+        <input
+          type="number"
+          id="units"
+          name="units"
+          value={product.units}
+          onChange={(e) => setProduct({...product, units: Number(e.target.value)})}
+          required
+          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+        />
+      </div>
+      <div className="mb-4">
+      <label htmlFor="Image" className="block text-sm font-medium text-gray-700">
           Image Upload
         </label>
         <input
           type="file"
-          id="image"
-          name="image"
+          id="Image"
+          name="Image"
           accept="image/*"
-          onChange={handleChange}
+          onChange={handleImageChange}
           className="mt-1 p-2 w-full border border-gray-300 rounded-md"
         />
+      <button onClick={handleImageUpload}>Upload Image</button>
+      {selectedImage && (
+        <div>
+          <p>Selected Image:</p>
+          <img className='h-40 w-40' src={URL.createObjectURL(selectedImage)} alt="Selected" />
+        </div>
+      )}
       </div>
-      {/* ... submit button ... */}
+     
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+      >
+        Add Product
+      </button>
     </form>
   );
 };
