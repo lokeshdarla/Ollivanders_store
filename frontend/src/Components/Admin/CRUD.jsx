@@ -35,7 +35,7 @@ const initialProducts = [
 
 
 
-const App = () => {
+const ProductPage = () => {
   const [products, setProducts] = useState(initialProducts);
 
   const addProduct = (newProduct) => {
@@ -49,7 +49,6 @@ const App = () => {
   return (
     <div className="container mx-auto mt-8 p-4 flex-col justify-center items-start">
       <div className='flex justify-between'>
-       
       <h1 className="text-3xl font-bold text-gray-800 mb-4">Products Inventory</h1>
       <div className='flex'>
         <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
@@ -64,4 +63,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ProductPage;

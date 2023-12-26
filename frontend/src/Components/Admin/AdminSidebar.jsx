@@ -4,7 +4,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { GiFairyWand } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 import AdminInfo from './AdminInfo';
-import App from './CRUD';
+import ProductPage from './CRUD';
 
 const Sidebar = () => {
   const {admin,logout}=AdminInfo();
@@ -42,7 +42,7 @@ const Sidebar = () => {
 
       <div className="p-4 sm:ml-64">
         <div className="p-4">
-          <App/>
+          <ProductPage/>
         </div>
       </div>
     </>

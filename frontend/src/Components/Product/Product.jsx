@@ -50,9 +50,9 @@ const Product = () => {
         {wands.map((wand) => (
           <div key={wand.id} className="w-full p-5 m-5 max-w-sm bg-transparent shadow flex-col items-center border-double border-4 border-[#C07F00]/90 ">
             <a href="#">
-              <div className="rounded-t-lg overflow-hidden flex justify-center">
+              <div className="rounded overflow-hidden flex justify-center h-72 m-5">
               <img
-                  className="h-80 object-center object-cover transform transition-transform hover:scale-105 "
+                  className=" object-fit transform transition-transform hover:scale-105"
                   src={wand.image}
                   alt="product image"
                 />
