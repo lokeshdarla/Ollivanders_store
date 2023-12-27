@@ -11,10 +11,33 @@ router = APIRouter(
     tags=["Products"]
 )
 
-@router.get("/", response_model=List[schemas.ProductBase])
+import base64
+
+def sqlalchemy_model_to_pydantic(product: models.Product, image: models.ProductImage) -> schemas.ProductOut:
+    return schemas.ProductOut(
+        ProductID=product.ProductID,
+        ProductName=product.ProductName,
+        Description=product.Description,
+        Price=product.Price,
+        units=product.units,
+        image=schemas.ImageOUT(ImageID=image.ImageID, Image=base64.b64encode(image.Image).decode('utf-8'))
+    )
+
+
+@router.get("/", response_model=List[schemas.ProductOut])
 def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    products = db.query(models.Product).offset(skip).limit(limit).all()
-    return products
+    products_and_images = (
+        db.query(models.Product, models.ProductImage)
+        .join(models.ProductImage, models.Product.ImageID == models.ProductImage.ImageID)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
+    
+    return [
+        sqlalchemy_model_to_pydantic(product, image)
+        for product, image in products_and_images
+    ] or []
 
 @router.post("/",response_model=schemas.ProductCreate,status_code=status.HTTP_201_CREATED)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):

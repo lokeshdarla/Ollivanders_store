@@ -42,14 +42,29 @@ class ProductBase(BaseModel):
     units: int
     ImageID:int
 
-    class Config:
-        orm_mode = True
+
 
 class ProductCreate(ProductBase):
     pass
 
 class ProductUpdate(ProductBase):
     pass
+
+
+class ImageOUT(BaseModel):
+    ImageID: int
+    Image: bytes 
+
+class ProductOut(BaseModel):
+    ProductID: int
+    ProductName: str
+    Description: str
+    Price: float
+    units: int
+    image: ImageOUT
+
+    class Config:
+        arbitrary_types_allowed = True
 
 class CartProduct(BaseModel):
     ProductName: str

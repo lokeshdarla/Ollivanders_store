@@ -16,28 +16,28 @@ export default function Header() {
       <nav className=" border-gray-200 px-4 lg:px-6 py-1.5">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex content-end text-[#C07F00]/90 text-lg gap-2">
-            <Wand2/>
+            <Wand2 />
             <img className='h-8' src={logo} alt="" />
           </Link>
           <div className='w-3/6'>
-            <SearchForm/>
+            <SearchForm />
           </div>
-            {user ? (
-              <div className="flex space-x-2 gap-10 ">
-                <Link  to="/cart" className='flex gap-2 text-center justify-center items-center text-white hover:text-[#C07F00]/90'><ShoppingBasket size={32}/><span>Cart</span></Link>
-                <button
-                  onClick={logout}
-                >
-                  <Avatar
-                    imageUrl="/docs/images/people/profile-picture-5.jpg"
-                    name={user.username}
-                    joinedDate="August 2014"
-                  />
-                </button>
-              </div>
-            ) : (
-              <div className='flex items-center gap-10'>
-                  <button
+          {user ? (
+            <div className="flex space-x-2 gap-10 ">
+              <Link to="/cart" className='flex gap-2 text-center justify-center items-center text-white hover:text-[#C07F00]/90'><ShoppingBasket size={32} /><span>Cart</span></Link>
+              <button
+                onClick={logout}
+              >
+                <Avatar
+                  imageUrl="/docs/images/people/profile-picture-5.jpg"
+                  name={user.username}
+                  joinedDate="August 2014"
+                />
+              </button>
+            </div>
+          ) : (
+            <div className='flex items-center gap-10'>
+              <button
                 className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00]"
                 onClick={() => navigation("/signup")}
               >
@@ -49,10 +49,10 @@ export default function Header() {
               >
                 Login
               </button>
+            </div>
+          )}
         </div>
-            )}
-        </div>
-       
+
       </nav>
     </header>
   );
