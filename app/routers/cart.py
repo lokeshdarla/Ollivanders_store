@@ -5,6 +5,7 @@ from ..database import get_db
 from .. import schemas, models, oauth2
 from .. import utils
 from sqlalchemy import and_
+import base64
 
 router = APIRouter(
     prefix="/cart",
@@ -45,19 +46,29 @@ def create_cart(
 @router.get("/", response_model=List[schemas.CartOut])
 def read_carts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     user_id = current_user.id
-    cart_items = db.query(models.Cart).filter(models.Cart.UserID == user_id).offset(skip).limit(limit).all()
-
+    cart_items = (
+        db.query(models.Cart, models.Product, models.ProductImage)
+        .join(models.Product, models.Product.ProductID == models.Cart.ProductID)
+        .join(models.ProductImage, models.Product.ImageID == models.ProductImage.ImageID)
+        .filter(models.Cart.UserID == user_id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+        )
     cart_list = []
-    for cart_item in cart_items:
-        product_info = db.query(models.Product).filter(models.Product.ProductID == cart_item.ProductID).first()
+    for cart_item, product, image in cart_items:
         cart_out = schemas.CartOut(
             CartID=cart_item.CartID,
             ProductID=cart_item.ProductID,
             Quantity=cart_item.Quantity,
             Product_info=schemas.CartProduct(
-                ProductName=product_info.ProductName,
-                Description=product_info.Description,
-                Price=float(product_info.Price),
+                ProductName=product.ProductName,
+                Description=product.Description,
+                Price=float(product.Price),
+                image=schemas.ImageOUT(
+                    ImageID=image.ImageID,
+                    Image=base64.b64encode(image.Image).decode('utf-8')
+                )
             )
         )
         cart_list.append(cart_out)

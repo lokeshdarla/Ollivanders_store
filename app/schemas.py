@@ -90,6 +90,7 @@ class CartProduct(BaseModel):
     ProductName: str
     Description: str
     Price: float
+    image: ImageOUT
 
 class CartOut(BaseModel):
     CartID:int
