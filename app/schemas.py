@@ -80,7 +80,6 @@ class CartCreate(CartBase):
     pass
 
 class CartUpdate(BaseModel):
-    CartID:int
     Quantity: int
 
 class CartDelete(BaseModel):

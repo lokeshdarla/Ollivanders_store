@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert/Alert';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginSection() {
   const navigation = useNavigate();
@@ -14,28 +15,27 @@ function LoginSection() {
   const handleLogin = async () => {
     try {
 
-      if (!username.trim() || !password.trim()) {
-        return;
-      }
-
-      const response = await fetch(loginUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        loginUrl,
+        {
           username: username,
           password: password,
-        }),
-      });
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      
 
-      if (response.ok) {
-        const data = await response.json();
+      if (response.status === 200) {
+        const data = await response.data;
         setAlert({ type: 'success', message: 'Login successful!' });
         localStorage.setItem('accessToken', data.accessToken);
         navigation('/');
       } else {
-        const errorData = await response.json();
+        const errorData = await response.data;
         setAlert({ type: 'error', message: 'Failed to log in. Please try again.' });
         setUsername('');
         setPassword('');

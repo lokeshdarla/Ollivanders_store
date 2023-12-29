@@ -19,9 +19,6 @@ export default function Header() {
             <Wand2 />
             <img className='h-8' src={logo} alt="" />
           </Link>
-          <div className='w-3/6'>
-            <SearchForm />
-          </div>
           {user ? (
             <div className="flex space-x-2 gap-10 ">
               <Link to="/cart" className='flex gap-2 text-center justify-center items-center text-white hover:text-[#C07F00]/90'><ShoppingBasket size={32} /><span>Cart</span></Link>

@@ -97,26 +97,25 @@ def read_cart(cart_id: int, db: Session = Depends(get_db), current_user: dict = 
 
     return cart_out
 
-@router.put("/", response_model=schemas.CartBase)
-def update_cart(cart: schemas.CartUpdate, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
-    db_cart = db.query(models.Cart).filter(models.Cart.CartID == cart.CartID and models.Cart.UserID==current_user.id).first()
-    
+
+@router.patch("/{cart_id}")
+def update_cart(cart_id: int, cart_update: schemas.CartUpdate, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
+    db_cart = db.query(models.Cart).filter(models.Cart.CartID == cart_id, models.Cart.UserID == current_user.id).first()
+
     if db_cart:
-        # Check if the specified product exists
         product = db.query(models.Product).filter(models.Product.ProductID == db_cart.ProductID).first()
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
-        # Check if the specified quantity is valid
-        if cart.Quantity <= 0:
-            raise HTTPException(status_code=400, detail="Invalid quantity. Quantity must be greater than 0.")
+        if cart_update.Quantity == 0:
+            db.delete(db_cart)
+            db.commit()
+            return {"detail": "Deleted Successfully"}
 
-        # Check if the new quantity is available in stock
-        if product.units is not None and cart.Quantity > product.units:
+        if product.units is not None and cart_update.Quantity > product.units:
             raise HTTPException(status_code=400, detail="Insufficient stock. Cannot update to more items than available.")
 
-        # Update the cart quantity
-        db_cart.Quantity = cart.Quantity
+        db_cart.Quantity = cart_update.Quantity
         db.commit()
         db.refresh(db_cart)
 
@@ -124,17 +123,16 @@ def update_cart(cart: schemas.CartUpdate, db: Session = Depends(get_db), current
     else:
         raise HTTPException(status_code=404, detail="Cart not found")
 
-
-@router.delete("/", response_model=schemas.CartBase)
-def delete_cart(cart_info: schemas.CartDelete, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
+@router.delete("/{cart_id}")
+def delete_cart(cart_id: int, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     db_cart = db.query(models.Cart).filter(
-        and_(models.Cart.CartID == cart_info.CartID, models.Cart.UserID == current_user.id)
+        and_(models.Cart.CartID == cart_id, models.Cart.UserID == current_user.id)
     ).first()
 
     if db_cart:
         db.delete(db_cart)
         db.commit()
-        return db_cart
+        return {"detail":"Deleted Successfully"}  # Return None or any suitable response for a successful deletion
     else:
-        raise HTTPException(status_code=404, detail="Cart not found")
+        raise HTTPException(status_code=404, detail=f"Cart with id {cart_id} not found")
 

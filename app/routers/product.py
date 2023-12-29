@@ -5,6 +5,7 @@ from typing import List
 from ..database import get_db
 from .. import schemas, models, oauth2
 from .. import utils
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 router = APIRouter(
     prefix="/products",
@@ -25,15 +26,21 @@ def sqlalchemy_model_to_pydantic(product: models.Product, image: models.ProductI
 
 
 @router.get("/", response_model=List[schemas.ProductOut])
-def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    products_and_images = (
-        db.query(models.Product, models.ProductImage)
-        .join(models.ProductImage, models.Product.ImageID == models.ProductImage.ImageID)
-        .offset(skip)
-        .limit(limit)
-        .all()
+def get_products(
+    skip: int = Query(0, alias="page", ge=0),
+    limit: int = Query(100, le=100),
+    search: str = Query("", description="Search query for products"),
+    db: Session = Depends(get_db),
+):
+    query = db.query(models.Product, models.ProductImage).join(
+        models.ProductImage, models.Product.ImageID == models.ProductImage.ImageID
     )
-    
+
+    if search:
+        query = query.filter(models.Product.ProductName.ilike(f"%{search}%"))
+
+    products_and_images = query.offset(skip).limit(limit).all()
+
     return [
         sqlalchemy_model_to_pydantic(product, image)
         for product, image in products_and_images

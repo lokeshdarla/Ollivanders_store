@@ -51,10 +51,6 @@ const ProductPage = () => {
       <div className='flex justify-between'>
       <h1 className="text-3xl font-bold text-gray-800 mb-4">Products Inventory</h1>
       <div className='flex'>
-        <button type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-        onClick={ProductForm}
-        >+ Add Product</button>
-      <button type="button" className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 gap-2 flex items-center"> <Pencil size={16} /> Edit Product</button>
         </div>
       </div>
       <ProductForm/>
