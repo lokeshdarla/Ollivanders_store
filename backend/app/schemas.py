@@ -30,6 +30,9 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
      id:int
+     
+class GoogleLogin(BaseModel):
+    id:str
 
 
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert/Alert';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FcGoogle } from 'react-icons/fc'
 
 function LoginSection() {
   const navigation = useNavigate();
@@ -11,6 +12,25 @@ function LoginSection() {
   const [alert, setAlert] = useState(null);
 
   const loginUrl = 'http://127.0.0.1:8000/login';
+
+  const handleGoogleLogin = () => {
+    const scopes = ['openid', 'profile', 'email', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'];
+
+    const params = new URLSearchParams({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+        access_type: 'offline',
+        response_type: 'code',
+        scope: scopes.join(' '),
+        state: new URLSearchParams({
+            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+        }).toString(),
+    });
+
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
+};
+
+
 
   const handleLogin = async () => {
     try {
@@ -94,6 +114,11 @@ function LoginSection() {
             >
               Log In
             </button>
+            <button 
+            onClick={handleGoogleLogin}
+            className='w-full border text-white border-white bg-black rounded-lg py-2.5 flex text-sm items-center justify-center gap-2'>
+                 <span><FcGoogle/></span>Login with Google
+                </button>
             <p className="text-sm font-light text-gray-500">
               <Link to="/signup" className="font-medium text-primary-600 hover:text-[#C07F00]/90 hover:underline">
               New to here ?{' '}

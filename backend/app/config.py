@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
+    GOOGLE_CLIENT_ID: str
+    GOOGLE_CLIENT_SECRET:str
+    GOOGLE_OAUTH_REDIRECT_URL:str
+    CLIENT_BASE_URL:str
 
     class Config:
         env_file = '.env'
