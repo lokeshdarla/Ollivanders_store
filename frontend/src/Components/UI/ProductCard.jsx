@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const ProductCard = ({ wand, addCart }) => {
   return (
     <div key={wand.ProductID} className="w-full p-5 m-5 max-w-sm bg-transparent shadow flex-col items-center border-double border-4 border-[#C07F00]/90 ">

@@ -2,37 +2,40 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from fastapi import UploadFile
+from uuid import UUID
 
 class UserBase(BaseModel):
-    username:str
-    password:str
-    
+    username: str
+    password: str
+
 class UserCreate(UserBase):
-    email:str
+    email: str
     is_admin: bool = False
 
 class UserUpdate(BaseModel):
-    email:str
-    username:str
-    
+    email: str
+    username: str
+
 class UserOut(BaseModel):
     username: str
-    email:str
+    email: str
     created_at: datetime
-
+    user_id: UUID  # Assuming user_id is of type UUID in your User model
 
 class UserLogin(BaseModel):
-    username:str
-    password:str
+    username: str
+    password: str
 
 class Token(BaseModel):
     accessToken: str
 
 class TokenData(BaseModel):
-     id:int
-     
+    id: UUID  # Assuming id is of type UUID in your User model
+
 class GoogleLogin(BaseModel):
-    id:str
+    id: str
+
+# ... (other models remain unchanged)
 
 
 

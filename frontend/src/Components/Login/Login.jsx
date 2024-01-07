@@ -47,8 +47,11 @@ function LoginSection() {
           },
         }
       );
-      
+      setUsername('');
+      setPassword('');
 
+      console.log(response);
+  
       if (response.status === 200) {
         const data = await response.data;
         setAlert({ type: 'success', message: 'Login successful!' });
@@ -56,7 +59,7 @@ function LoginSection() {
         navigation('/');
       } else {
         const errorData = await response.data;
-        setAlert({ type: 'error', message: 'Failed to log in. Please try again.' });
+        setAlert({ type: 'error', message: errorData});
         setUsername('');
         setPassword('');
       }
@@ -65,7 +68,8 @@ function LoginSection() {
       setAlert({ type: 'error', message: error.message });
 
       setUsername('');
-      setPassword('');    }
+      setPassword('');   
+     }
   };
 
   return (
@@ -117,7 +121,7 @@ function LoginSection() {
             <button 
             onClick={handleGoogleLogin}
             className='w-full border text-white border-white bg-black rounded-lg py-2.5 flex text-sm items-center justify-center gap-2'>
-                 <span><FcGoogle/></span>Login with Google
+                 <span className='text-xl'><FcGoogle/></span>Login with Google
                 </button>
             <p className="text-sm font-light text-gray-500">
               <Link to="/signup" className="font-medium text-primary-600 hover:text-[#C07F00]/90 hover:underline">
