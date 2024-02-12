@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [price ,setPrice]=useState(0);
 
   useEffect(() => {
     const cartURL = "http://127.0.0.1:8000/cart/";
@@ -20,17 +21,18 @@ const CartPage = () => {
     })
       .then(response => {
         setCartItems(response.data);
+        calculateTotal(response.data);
         console.log(response.data);
       })
       .catch(error => {
         console.error('Error fetching cart items:', error);
       });
-  }, []);
+  }, [cartItems]);
 
   // Function to handle the removal of an item from the cart
   const handleRemoveItem = (productId) => {
     const token = localStorage.getItem("accessToken");
-
+  
     axios.delete(`http://127.0.0.1:8000/cart/${productId}`, {
       headers: {
         "Content-Type": "application/json",
@@ -38,14 +40,26 @@ const CartPage = () => {
       },
     })
       .then(response => {
+        location.reload();
         setCartItems(prevItems => prevItems.filter(item => item.product_info.ProductID !== productId));
         console.log("Item removed successfully:", response.data);
       })
       .catch(error => {
         console.error('Error removing item from cart:', error);
       });
+  };
+
+    const calculateTotal = (cartItems) => {
+      let totalPrice = 0;
   
+      for (const cartItem of cartItems) {
+        totalPrice += cartItem.Product_info.Price * cartItem.Quantity;
+      }
+      
+      totalPrice+=4.99;
+      setPrice(totalPrice);
     };
+    
 
   const handleQuantityChange = (cartId,newQuantity) => {
 
@@ -63,6 +77,7 @@ const CartPage = () => {
         if (!response.ok) {
           throw new Error('Failed to update cart quantity');
         }
+        calculateTotal(cartItems);
         return response.json();
       })
       .then(data => {
@@ -98,7 +113,7 @@ const CartPage = () => {
   <div className="mt-6 h-full rounded-lg border-2 border-dotted p-6 shadow-md md:mt-0 md:w-1/3 border-[#C07F00]/90">
      <div className="mb-2 flex justify-between">
             <p className="">Subtotal</p>
-            <p className="">999</p>
+            <p className="">{price-4.99}</p>
           </div>
           <div className="flex justify-between">
             <p className="">Shipping</p>
@@ -108,7 +123,7 @@ const CartPage = () => {
           <div className="flex justify-between">
             <p className="text-lg font-bold">Total</p>
             <div className="">
-              <p className="mb-1 text-lg font-bold">99999</p>
+              <p className="mb-1 text-lg font-bold">{price}</p>
             </div>
           </div>
           <button className="mt-6 w-full rounded-md  bg-[#C07F00]/90 py-1.5 font-medium text-blue-50 ">

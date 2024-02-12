@@ -3,11 +3,11 @@ import logo from "../assets/logo.png"
 const Hero = () => {
   return (
     <>
-    <section className=" bg-transparent relative " style={{ fontFamily: 'Metal-Mania' }}>
-      <div className=" px-4 mx-auto max-w-screen-xl py-24 lg:py-56 flex flex-col items-center justify-center gap-10 h-96 text-white">
+    <section className="relative bg-transparent " style={{ fontFamily: 'Metal-Mania' }}>
+      <div className="flex flex-col items-center justify-center max-w-screen-xl gap-10 px-4 py-24 mx-auto text-white lg:py-56 h-96">
       
-        <img className="h-10 lg:h-20 transform transition-transform hover:scale-105" src={logo} alt="" />
-        <p className="mb-8  text-white lg:text-xl sm:px-16 lg:px-48 text-justify font-light">
+        <img className="h-10 transition-transform transform lg:h-20 hover:scale-105" src={logo} alt="" />
+        <p className="mb-8 font-light text-justify text-white lg:text-2xl sm:px-16 lg:px-48">
           Ollivanders Store is a wizard-themed e-commerce website where fans of the Harry Potter series can explore and purchase a variety of magical wizard wands.
         </p>
       </div>

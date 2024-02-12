@@ -44,7 +44,10 @@ const CartItem = ({ CartID, imageURL, name, details, quantity, price, handleDele
 
           <p className="text-sm">${price}</p>
           <button
-            onClick={() => handleDelete(CartID)}
+            onClick={(e) => {
+              handleDelete(CartID)
+              e.preventDefault();}
+          }
             className="p-2 decoration-none text-white bg-red-700 hover:bg-red-800  rounded-lg"
           >
             <Trash />

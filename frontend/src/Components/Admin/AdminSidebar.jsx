@@ -15,7 +15,7 @@ const Sidebar = () => {
         data-drawer-toggle="default-sidebar"
         aria-controls="default-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 text-sm text-gray-500 rounded-lg ms-3 sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
         <span className="sr-only">Open sidebar</span>
       </button>
@@ -25,16 +25,16 @@ const Sidebar = () => {
         className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-          <ul className="space-y-2 font-medium text-white text-xl gap-2">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
+          <ul className="gap-2 space-y-2 text-xl font-medium text-black">
             <li>
-            <Link href="/products" className='flex justify-start items-center gap-2'> <span><GiFairyWand /></span> Products</Link>
+            <Link href="/products" className='flex items-center justify-start gap-2'> <span><GiFairyWand /></span> Products</Link>
             </li>
             <li>
-            <Link href="/orders" className='flex justify-start items-center gap-2'> <span><IoReorderFour /></span> Orders</Link>
+            <Link href="/orders" className='flex items-center justify-start gap-2'> <span><IoReorderFour /></span> Orders</Link>
             </li>
             <li>
-            <button onClick={()=>logout()} className='flex justify-start items-center gap-2'> <span><MdAccountCircle /></span> Logout</button>
+            <button onClick={()=>logout()} className='flex items-center justify-start gap-2'> <span><MdAccountCircle /></span> Logout</button>
             </li>
           </ul>
         </div>

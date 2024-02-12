@@ -6,6 +6,9 @@ const ProductTable = ({ products, deleteProduct }) => {
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
+          <th scope="col" className="px-6 py-3">
+              S.no
+            </th>
             <th scope="col" className="px-6 py-3">
               Wand Name
             </th>
@@ -27,16 +30,19 @@ const ProductTable = ({ products, deleteProduct }) => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className="odd:bg-white even:bg-gray-50 border-b">
+          {products.map((product,index) => (
+            <tr key={product.id} className="border-b odd:bg-white even:bg-gray-50">
+               <td className="px-6 py-4 font-medium whitespace-nowrap">
+                {index+1}
+              </td>
               <td className="px-6 py-4 font-medium whitespace-nowrap">
                 {product.productName}
               </td>
-              <td className="px-6 py-4 w-5/6">{product.description}</td>
+              <td className="">{product.description}</td>
               <td className="px-6 py-4">${product.price}</td>
               <td className="px-6 py-4">{product.quantity}</td>
               <td className="px-6 py-4">
-                <img src={product.image} alt={product.productName} className="w-12 h-12 object-cover" />
+                <img src={product.image} alt={product.productName} className="object-cover w-12 h-12" />
               </td>
               <td className="px-6 py-4">
                 <button

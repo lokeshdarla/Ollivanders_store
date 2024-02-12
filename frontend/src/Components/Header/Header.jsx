@@ -4,7 +4,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBasket } from 'lucide-react';
 import Avatar from '../UI/Avatar';
 import logo from "../assets/logo.png";
 import { IoCartSharp } from "react-icons/io5";

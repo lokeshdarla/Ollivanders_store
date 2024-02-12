@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 const ProductForm = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -72,8 +73,6 @@ const ProductForm = () => {
     } catch (error) {
       console.error('Error adding product:', error);
     }
-  
-    // Reset the form fields after submission
     setProduct({
       ProductName: '',
       Description: '',
@@ -86,9 +85,7 @@ const ProductForm = () => {
   
 
   return (
-    <form onSubmit={handleSubmit} className="w-full mx-auto m-4 p-4 bg-white">
-      <div>
-      </div>
+    <form onSubmit={handleSubmit} className="w-[100%] md:w-[40%] my-4 bg-white ">
       <div className="mb-4">
         <label htmlFor="ProductName" className="block text-sm font-medium text-gray-700">
           Product Name
@@ -100,7 +97,7 @@ const ProductForm = () => {
           value={product.ProductName}
           onChange={(e) => setProduct({...product, ProductName: e.target.value})}
           required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          className="w-full p-2 mt-1 border border-gray-300 rounded-md"
         />
       </div>
       <div className="mb-4">
@@ -113,10 +110,11 @@ const ProductForm = () => {
           value={product.Description}
           onChange={(e) => setProduct({...product, Description: e.target.value})}
           required
-          rows="3"
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          rows="2"
+          className="w-full p-2 mt-1 border border-gray-300 rounded-md"
         ></textarea>
       </div>
+      <div className="flex justify-between gap-2">
       <div className="mb-4">
         <label htmlFor="Price" className="block text-sm font-medium text-gray-700">
           Price
@@ -128,7 +126,7 @@ const ProductForm = () => {
           value={product.Price}
           onChange={(e) => setProduct({...product, Price: parseFloat(e.target.value)})}
           required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          className="w-full p-2 mt-1 border border-gray-300 rounded-md "
         />
       </div>
       <div className="mb-4">
@@ -142,33 +140,32 @@ const ProductForm = () => {
           value={product.units}
           onChange={(e) => setProduct({...product, units: Number(e.target.value)})}
           required
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+          className="w-full p-2 mt-1 border border-gray-300 rounded-md "
         />
       </div>
+      </div>
+      
       <div className="mb-4">
-      <label htmlFor="Image" className="block text-sm font-medium text-gray-700">
-          Image Upload
+            <div class="flex items-center justify-center w-full">
+        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+            <div class="flex flex-col items-center justify-center py-5 gap-2">
+            <IoCloudUploadOutline size={25}/>
+                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            </div>
+            <input id="dropzone-file" type="file" class="hidden" onChange={handleImageChange} />
         </label>
-        <input
-          type="file"
-          id="Image"
-          name="Image"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-        />
-      <button onClick={handleImageUpload}>Upload Image</button>
+      </div> 
       {selectedImage && (
         <div>
           <p>Selected Image:</p>
-          <img className='h-40 w-40' src={URL.createObjectURL(selectedImage)} alt="Selected" />
+          <img className='w-40 h-40' src={URL.createObjectURL(selectedImage)} alt="Selected" />
         </div>
       )}
       </div>
      
       <button
         type="submit"
-        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+        className="w-full p-2 text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring focus:border-blue-300"
       >
         Add Product
       </button>

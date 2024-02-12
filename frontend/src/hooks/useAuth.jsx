@@ -46,6 +46,7 @@ export default function useAuth() {
 
   const logout = () => {
     localStorage.removeItem('accessToken');
+    navigate('/');
     setUser(null);
   };
 

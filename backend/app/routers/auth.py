@@ -6,9 +6,6 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 import requests
 from ..config import settings
-from ..database import get_db
-from .. import models, schemas, oauth2, utils
-from sqlalchemy.orm import Session
 
 router = APIRouter(tags=["Authentication"])
 
@@ -40,8 +37,6 @@ def get_user_info(access_token: str):
     return user_info_response.json()
 
 
-from uuid import UUID
-
 @router.get("/auth/google/callback")
 async def auth_google_callback(code: str, db: Session = Depends(get_db)):
     try:
@@ -58,7 +53,6 @@ async def auth_google_callback(code: str, db: Session = Depends(get_db)):
                 username=user_info['name'],
                 email=user_info['email'],
                 password=hashed_password,
-                # Include additional user details if available
             )
 
             db.add(new_user)
@@ -84,11 +78,11 @@ async def auth_google_callback(code: str, db: Session = Depends(get_db)):
 def login(user_cred: schemas.UserLogin,db:Session=Depends(get_db)):
     user=db.query(models.User).filter(models.User.username==user_cred.username).first()
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid Credentials")
-    
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="User not found")
     if not utils.verfiy(user_cred.password,user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Invalid Credentials")
-
-    access_token=oauth2.create_access_token(data={"id":user.id,"name":user.username,"email":user.username})
+    id=str(user.id)
+    access_token=oauth2.create_access_token(data={"id":id,"name":user.username,"email":user.username})
+    
     
     return({"accessToken":access_token})
