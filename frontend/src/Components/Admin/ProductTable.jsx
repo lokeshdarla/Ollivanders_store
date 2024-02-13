@@ -22,9 +22,6 @@ const ProductTable = ({ products, deleteProduct }) => {
               Quantity
             </th>
             <th scope="col" className="px-6 py-3">
-              Image
-            </th>
-            <th scope="col" className="px-6 py-3">
               Action
             </th>
           </tr>
@@ -41,9 +38,6 @@ const ProductTable = ({ products, deleteProduct }) => {
               <td className="">{product.description}</td>
               <td className="px-6 py-4">${product.price}</td>
               <td className="px-6 py-4">{product.quantity}</td>
-              <td className="px-6 py-4">
-                <img src={product.image} alt={product.productName} className="object-cover w-12 h-12" />
-              </td>
               <td className="px-6 py-4">
                 <button
                   onClick={() => deleteProduct(product.id)}

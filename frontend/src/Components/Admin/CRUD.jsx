@@ -72,7 +72,7 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="flex-col items-center justify-start p-4 mx-auto mt-8">
+    <div className="flex-col items-center justify-start gap-5 p-4 mx-auto">
       <h1 className="mb-4 text-3xl font-bold text-gray-800">Products Inventory</h1>
       <ProductForm/>
       <ProductTable products={products} deleteProduct={deleteProduct} />
