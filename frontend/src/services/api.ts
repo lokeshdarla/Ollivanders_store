@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 //Example url
 const API_ENDPOINTS = {
-  LOGIN: '/api/auth/login',
+  LOGIN: '/login',
   REGISTER: '/api/auth/register',
   GET_USER: '/api/user',
 };

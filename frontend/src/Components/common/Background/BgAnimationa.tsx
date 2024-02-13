@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import { random } from "maath";
-import bgTheme from "../assets/bgTheme.mp3"
 
 export const BackgroundAnimation = () => {
   return (
@@ -19,18 +18,19 @@ export const BackgroundAnimation = () => {
   );
 };
 
-export const Stars = (props) => {
-  const ref = useRef();
+export const Stars = (props: any) => {
+  const ref = useRef<HTMLInputElement>();
 
   const [sphere] = useState(() =>
     random.inSphere(new Float32Array(4000), { radius: 2.5 })
   );
 
   useFrame((_state, delta) => {
+    // @ts-ignore
     ref.current.rotation.x -= delta / 50;
+    // @ts-ignore
     ref.current.rotation.y -= delta / 50;
   });
-  
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points
