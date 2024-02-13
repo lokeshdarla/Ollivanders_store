@@ -11,7 +11,7 @@ const SearchForm = ({ handleSubmit }) => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex gap-1 w-96 mr-10">
+    <form onSubmit={onSubmit} className="flex gap-1 mr-10 w-96">
       <input
         type="search"
         id="search-dropdown"

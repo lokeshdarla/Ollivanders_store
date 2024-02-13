@@ -74,7 +74,7 @@ function LoginSection() {
 
   return (
     <section className="">
-    <div className=" flex relative items-center justify-center px-6 py-8 mx-auto lg:py-0 bg-transparent">
+    <div className="relative flex items-center justify-center px-6 py-8 mx-auto bg-transparent  lg:py-0">
       <div className="w-full rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 border border-[#C07F00]/90">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-[#C07F00]/90  md:text-2xl text-center">

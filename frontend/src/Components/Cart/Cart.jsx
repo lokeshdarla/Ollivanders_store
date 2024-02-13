@@ -91,9 +91,9 @@ const CartPage = () => {
 
 
   return (
-    <div className="h-screen bg-transparent text-white relative">
-      <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
-      <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+    <div className="relative h-screen text-white bg-transparent">
+      <h1 className="mb-10 text-2xl font-bold text-center">Cart Items</h1>
+      <div className="justify-center max-w-5xl px-6 mx-auto md:flex md:space-x-6 xl:px-0">
         <div className="rounded-lg">
           {cartItems.map((cart) => (
             <CartItem
@@ -111,7 +111,7 @@ const CartPage = () => {
         </div>
         {cartItems.length!=0 ? (
   <div className="mt-6 h-full rounded-lg border-2 border-dotted p-6 shadow-md md:mt-0 md:w-1/3 border-[#C07F00]/90">
-     <div className="mb-2 flex justify-between">
+     <div className="flex justify-between mb-2">
             <p className="">Subtotal</p>
             <p className="">{price-4.99}</p>
           </div>
@@ -132,7 +132,7 @@ const CartPage = () => {
   </div>
 ) : (
   <div className="flex flex-col items-center justify-center h-3/6">
-  <h1 className="text-3xl mb-4">Your cart is empty!</h1>
+  <h1 className="mb-4 text-3xl">Your cart is empty!</h1>
   <Link to="/" className="flex items-center gap-2 text-[#C07F00]/90 text-lg text-center">
     Continue Shopping
   </Link>

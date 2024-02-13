@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
-import ProductCard from "../UI/ProductCard";
-import SearchForm from "../UI/SearchForm";
-import NoProducts from "../UI/noProduct";
+import ProductCard from "../common/ui/ProductCard";
+import SearchForm from "../common/UI/SearchForm";
+import NoProducts from "../common/ui/noProduct";
 import useAuth from '../../hooks/useAuth';
 
 const Product = () => {
@@ -77,7 +77,7 @@ const Product = () => {
 
 
   return (
-    <section className="flex flex-col gap-5 w-full bg-transparent items-center justify-center" style={{ fontFamily: 'Metal-Mania' }}>
+    <section className="flex flex-col items-center justify-center w-full gap-5 bg-transparent" style={{ fontFamily: 'Metal-Mania' }}>
       <div className="w-full ">
         <div className="grid grid-cols-3">
         <div className="flex items-center justify-center w-full">
@@ -86,7 +86,7 @@ const Product = () => {
         </div>
         
 
-        <div className="flex flex-wrap gap-2 justify-center items-center relative">
+        <div className="relative flex flex-wrap items-center justify-center gap-2">
   {Wands.length !== 0 ? (
     Wands.map((wand) => (
       <ProductCard
