@@ -1,9 +1,14 @@
 import React from 'react';
 import harrypotter from "../assets/harrpotter.webp";
 
-const Avatar = ({ imageUrl, name }) => {
+interface AvatarProps {
+  imageUrl?: string;
+  name: string;
+}
+
+const Avatar: React.FC<AvatarProps> = ({ imageUrl, name }) => {
   return (
-    <div className="flex p-2 rounded-lg items-center gap-4 border  border-[#C07F00]/90">
+    <div className="flex p-2 rounded-lg items-center gap-4 border border-[#C07F00]/90">
       {imageUrl ? (
         <img src={imageUrl} alt="" className="w-8 h-8 rounded-full" />
       ) : (

@@ -1,11 +1,26 @@
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function useAuth() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+interface User {
+  // Define the structure of your user object here
+  // For example:
+  id: string;
+  username: string;
+  picture?:string;
+  exp:number;
+  // ... other properties
+}
+
+interface AuthResult {
+  user: User | null;
+  logout: () => void;
+}
+
+export default function useAuth(): AuthResult {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -15,7 +30,7 @@ export default function useAuth() {
 
     try {
       const accessToken = getAccessToken();
-      const decodedAccessToken = jwtDecode(accessToken);
+      const decodedAccessToken = jwtDecode(accessToken) as User; // Adjust the type based on your user object
 
       if (decodedAccessToken.exp * 1000 < Date.now()) {
         throw new Error('Access token expired.');
@@ -29,7 +44,7 @@ export default function useAuth() {
     }
   };
 
-  const getAccessToken = () => {
+  const getAccessToken = (): string => {
     const accessTokenFromUrl = new URLSearchParams(window.location.search).get('token');
     const accessTokenFromLocalStorage = localStorage.getItem('accessToken');
 
@@ -44,7 +59,7 @@ export default function useAuth() {
     }
   };
 
-  const logout = () => {
+  const logout = (): void => {
     localStorage.removeItem('accessToken');
     navigate('/');
     setUser(null);
@@ -54,5 +69,5 @@ export default function useAuth() {
     fetchData();
   }, [navigate]);
 
-  return { user, logout};
+  return { user, logout };
 }

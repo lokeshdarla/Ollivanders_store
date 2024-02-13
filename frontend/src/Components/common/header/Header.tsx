@@ -4,8 +4,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import Avatar from '../UI/Avatar';
-import logo from "../assets/logo.png";
+import Avatar from '@/components/common/ui/Avatar';
+import logo from "@/assets/images/logo.png";
 import { IoCartSharp } from "react-icons/io5";
 
 export default function Header() {
@@ -44,7 +44,7 @@ export default function Header() {
               <button onClick={logout}>
                 <Avatar
                   imageUrl={user.picture}
-                  name={user.name}
+                  name={user.username}
                 />
               </button>
             </div>
@@ -52,13 +52,13 @@ export default function Header() {
             <div className='flex flex-col items-center gap-2 mt-10 lg:gap-4 lg:flex-row lg:mt-0'>
               <button
                 className="inline-flex justify-center items-center py-2 w-32 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] rounded-lg"
-                onClick={() => { navigation("/signup"); closeMobileMenu(); }}
+                onClick={() => { navigation("/sign-up"); closeMobileMenu(); }}
               >
                 Sign Up
               </button>
               <button
                 className="inline-flex justify-center items-center py-2 w-32 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] rounded-lg"
-                onClick={() => { navigation("/login"); closeMobileMenu(); }}
+                onClick={() => { navigation("/sign-in"); closeMobileMenu(); }}
               >
                 Login
               </button>
