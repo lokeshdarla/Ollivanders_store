@@ -48,7 +48,7 @@ function TopProduct() {
   };
 
   return (
-    <div className='relative flex items-center justify-center'>
+    <div className='relative grid grid-cols-1 overflow-hidden md:grid-cols-4'>
       {Products.map((product) => (
         <ProductCard key={product.id} wand={product} addCart={addCart} />
       ))}

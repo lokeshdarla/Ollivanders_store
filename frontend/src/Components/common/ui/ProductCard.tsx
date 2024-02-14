@@ -14,9 +14,9 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ wand, addCart }) => {
   return (
-    <div key={wand.ProductID} className="w-full m-5 max-w-sm bg-transparent shadow flex-col items-center border rounded-lg border-[#C07F00]/90 ">
+    <div key={wand.ProductID} className=" mx-5 w-lg bg-transparent shadow flex-col items-center border rounded-lg border-[#C07F00]/90 ">
       <a href="#">
-        <div className="flex justify-center h-64 m-5 overflow-hidden rounded">
+        <div className="flex justify-center h-64 px-5 overflow-hidden rounded">
           <img
             className="transition-transform transform object-fit hover:scale-105"
             src={wand.image}
@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ wand, addCart }) => {
       </a>
       <div className="px-5 pb-5">
         <a href="#">
-          <h5 className="text-lg font-semibold tracking-tight text-white">{wand.ProductName}</h5>
+          <h5 className="text-lg font-semibold tracking-tight text-center text-white">{wand.ProductName}</h5>
         </a>
         <br />
         <div className="flex items-center justify-between">

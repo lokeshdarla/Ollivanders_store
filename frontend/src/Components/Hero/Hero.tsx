@@ -1,4 +1,6 @@
 import React from 'react';
+import hero from '@/assets/hero.png'
+import logo from '@/assets/images/logo.png'
 
 
 const Hero: React.FC = () => {
@@ -7,19 +9,18 @@ const Hero: React.FC = () => {
   const imageURL3: string="https://blenderartists.org/uploads/default/original/4X/7/b/4/7b4770ef2fc4ea13a48809583e3284459867f801.jpeg"
   return (
     <>
-      <section className="relative bg-transparent " style={{ fontFamily: 'Metal-Mania' }}>
-        <div className="flex flex-col items-center justify-center max-w-screen-xl gap-10 px-4 mx-auto text-white">
-          
-        <div className="relative group">
-      <img className="transition-transform transform" src={imageURL} alt="" />
-      <div className="absolute opacity-100 inset-20 bg-gradient-to-white from-gray-50 to-black"></div>
+    <div className="relative flex items-center justify-center px-10 mx-10">
+    <img className="object-cover w-[50%] rounded-xl" src={hero} alt="" />
+    <div className='flex flex-col items-center justify-center gap-16'>
+      <img className='h-20' src={logo} alt="" />
+    <p className="px-20 text-xl text-center text-white">
+    Ollivanders Store is a wizard-themed e-commerce website where fans of the Harry Potter series can explore and purchase a variety of magical wizard wands.
+    </p>
     </div>
-          <p className="mb-8 font-light text-justify text-white lg:text-2xl sm:px-16 lg:px-48">
-            Ollivanders Store is a wizard-themed e-commerce website where fans of the Harry Potter series can explore and purchase a variety of magical wizard wands.
-          </p>
-        </div>
-      </section>
-    </>
+  
+  </div>
+  </>
+  
   );
 };
 
