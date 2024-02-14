@@ -5,7 +5,9 @@ import AuthLayout from './pages/auth/page';
 import SigninForm from './pages/auth/Login/SigninForm';
 import SignupForm from './pages/auth/SignupSection/SignupForm';
 import { BackgroundAnimation } from './components/common/Background/BgAnimationa';
-import Home from './pages/home/Home/HomeLayout';
+import HomeLayout from '@/pages/home/Home/HomeLayout';
+import Home from '@/pages/home/page';
+import ProductPage from '@/pages/product/page';
 
 const App = () => {
   return (
@@ -29,7 +31,10 @@ const App = () => {
             </AuthLayout>
           }
         />
-        <Route path="/" element={<Home />} />
+       <Route path="/" element={<Home />}>
+       <Route path="/" element={<HomeLayout/>} />
+        <Route path="/product" element={<ProductPage />} />
+      </Route>
       </Routes>
     </main>
   );

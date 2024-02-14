@@ -18,7 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ wand, addCart }) => {
       <a href="#">
         <div className="flex justify-center h-64 px-5 overflow-hidden rounded">
           <img
-            className="transition-transform transform object-fit hover:scale-105"
+            className="p-5 transition-transform transform rounded-full object-fit hover:scale-105"
             src={wand.image}
             alt="product image"
           />
