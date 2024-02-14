@@ -8,6 +8,7 @@ import { BackgroundAnimation } from './components/common/Background/BgAnimationa
 import HomeLayout from '@/pages/home/Home/HomeLayout';
 import Home from '@/pages/home/page';
 import ProductPage from '@/pages/product/page';
+import ProductView from './components/Product/ProductView';
 
 const App = () => {
   return (
@@ -32,8 +33,9 @@ const App = () => {
           }
         />
        <Route path="/" element={<Home />}>
-       <Route path="/" element={<HomeLayout/>} />
+        <Route path="/" element={<HomeLayout/>} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/:id" element={<ProductView/>} />
       </Route>
       </Routes>
     </main>

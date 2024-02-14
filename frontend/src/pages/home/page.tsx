@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 function Home() {
   return (
-   <div className='relative w-full'>
+   <div className='relative w-full spacey-5'>
     <Header/>
     <Outlet/>
     <Footer/>
