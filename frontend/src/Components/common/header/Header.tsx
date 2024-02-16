@@ -43,8 +43,8 @@ export default function Header() {
                 <IoCartSharp size={28}/><span>Cart</span></Link>
               <button onClick={logout}>
                 <Avatar
-                  imageUrl={user.picture}
-                  name={user.username}
+                  imageUrl={"L"}
+                  name={"Lokesh"}
                 />
               </button>
             </div>

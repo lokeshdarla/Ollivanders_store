@@ -1,48 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import CartItem from "@/components/common/ui/CartItem";
 import { Link } from 'react-router-dom';
-import Harry from '@/assets/harrpotter.webp'
+import { fetchCartItems, removeCartItem, updateCartItemQuantity} from "@/services/cart";
+import { useCart } from '@/context/cartContextProvider';
 
-
-const CartItems = [
-  {
-    id: 1,
-    ProductName: "Harry Potter's Wand",
-    description:
-      'The wand that chose Harry Potter, the Boy Who Lived, when he visited Ollivanders Wand shop at 11 years of age.',
-    Price: 999.99,
-    quantity: 10,
-    image: '@/assets/harrpotter.webp',
-  },
-  {
-    id: 2,
-    ProductName: "Hermione Granger's Wand",
-    description:
-      "Take home the wand of Hermione Granger, founding member of Dumbledore’s Army, best friend to Ron and Harry and often called the brightest witch of her age.",
-    Price: 999.99,
-    quantity: 10,
-    image: '@/assets/harrpotter.webp',
-  },
-  {
-    id: 3,
-    ProductName: "Professor Dumbledore's Wand",
-    description:
-      "Take home Professor Albus Dumbledore’s famous wand, also known as the Elder Wand. Stay loyal to one of Hogwarts’ most famous Headmasters with this replica wand.",
-    Price: 999.99,
-    quantity: 10,
-    image: '@/assets/harrpotter.webp',
-  },
-  {
-    id: 4,
-    ProductName: "Professor Dumbledore's Wand",
-    description:
-      "Take home Professor Albus Dumbledore’s famous wand, also known as the Elder Wand. Stay loyal to one of Hogwarts’ most famous Headmasters with this replica wand.",
-    Price: 999.99,
-    quantity: 10,
-    image: '@/assets/harrpotter.webp',
-  },
-]
 
 interface CartItem {
   id: number;
@@ -50,89 +11,75 @@ interface CartItem {
   description: string;
   Price: number;
   quantity: number;
-  image: string;
+  imageURL: string;
 }
+
+
 const CartPage: React.FC = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(CartItems);
+  const { cartItems, addToCart, removeFromCart,updateCartItemsQuantity } = useCart();
   const [price, setPrice] = useState<number>(0);
 
-  // useEffect(() => {
-  //   const cartURL = "http://127.0.0.1:8000/cart/";
-  //   const token = localStorage.getItem("accessToken");
+  useEffect(() => {
+    const token: string | null = localStorage.getItem("accessToken");
 
-  //   axios.get<CartItem[]>(cartURL, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then(response => {
-  //       setCartItems(response.data);
-  //      // calculateTotal(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching cart items:', error);
-  //     });
-  // }, [cartItems]);
+    if (token) {
+      fetchCartItems(token)
+        .then((response) => {
+          setCartItems(response);
+          calculateTotal(response);
+          console.log(response);
+        })
+        .catch((error) => {
+          console.error('Error fetching cart items:', error);
+        });
+    }
+  calculateTotal(cartItems);
+  }, []);
 
-  // const handleRemoveItem = (productId: number) => {
-  //   const token = localStorage.getItem("accessToken");
+  const handleDelete = (productId: number) => {
+    const token: string | null = localStorage.getItem("accessToken");
+    if (token) {
+      removeCartItem(productId, token)
+        .then(() => {
+         removeFromCart(productId);
+        })
+        .catch((error) => {
+          console.error('Error removing item from cart:', error);
+        });
+    } else {
+      removeFromCart(productId);
+    }
+  };
 
-  //   axios.delete(`http://127.0.0.1:8000/cart/${productId}`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then(response => {
-  //       location.reload();
-  //       setCartItems(prevItems => prevItems.filter(item => item.Product_info.ProductID !== productId));
-  //       console.log("Item removed successfully:", response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error removing item from cart:', error);
-  //     });
-  // };
+  const quantityChange = (cartId: number, newQuantity: number) => {
+    const token: string | null = localStorage.getItem("accessToken");
+  
+    if (token) {
+      updateCartItemQuantity(cartId, newQuantity, token)
+        .then(() => {
+          updateCartItemsQuantity(cartId,newQuantity);
+        })
+        .catch((error) => {
+          console.error('Error updating cart quantity:', error);
+        });
+    } else {
+      updateCartItemsQuantity(cartId,newQuantity);
+      console.log('User not authenticated. Updating cart quantity locally.');
+    }
+  };
+  
+  
 
   const calculateTotal = (cartItems: CartItem[]) => {
     let totalPrice = 0;
 
     for (const cartItem of cartItems) {
-      totalPrice += cartItem.Product_info.Price * cartItem.Quantity;
+      totalPrice += cartItem.Price * cartItem.quantity;
     }
 
     totalPrice += 4.99;
     setPrice(totalPrice);
   };
-
-  // const handleQuantityChange = (cartId: number, newQuantity: number) => {
-  //   const token = localStorage.getItem("accessToken");
-
-  //   fetch(`http://127.0.0.1:8000/cart/${cartId}`, {
-  //     method: 'PATCH',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify({ "Quantity": newQuantity }),
-  //   })
-  //     .then(response => {
-  //       if (!response.ok) {
-  //         throw new Error('Failed to update cart quantity');
-  //       }
-  //       calculateTotal(cartItems);
-  //       return response.json();
-  //     })
-  //     .then(data => {
-  //       console.log('Cart quantity updated successfully:', data);
-  //       setQuantity(newQuantity);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error updating cart quantity:', error);
-  //     });
-  // };
-
   
   return (
     <div className="relative text-white bg-transparent ">
@@ -144,13 +91,13 @@ const CartPage: React.FC = () => {
               <CartItem
                 key={cart.id}
                 CartID={cart.id}
-                imageURL={cart.image}
+                imageURL={cart.imageURL}
                 name={cart.ProductName}
                 details={cart.description}
                 quantity={cart.quantity}
                 price={cart.Price}
-                handleDelete={()=>{}}
-                HandleQuantityChange={()=>{}}
+                handleDelete={handleDelete}
+                HandleQuantityChange={quantityChange}
               />
             ))}
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trash } from 'lucide-react';
 import harry from '@/assets/Harry.webp'
 
@@ -14,7 +14,6 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ CartID, imageURL, name, details, quantity, price, handleDelete, HandleQuantityChange }) => {
-  const [Quantity, setQuantity] = useState<number>(quantity);
 
   return (
     <div className="flex items-center gap-5 p-6 mb-6 rounded-lg border-2 border-dotted border-[#C07F00]/90">
@@ -39,7 +38,7 @@ const CartItem: React.FC<CartItemProps> = ({ CartID, imageURL, name, details, qu
           type="button"
           id="decrement-button"
           data-input-counter-decrement="counter-input"
-          onClick={()=>setQuantity(Quantity-1)}
+          onClick={()=>{HandleQuantityChange(CartID,quantity-1)}}
           className="inline-flex items-center justify-center w-5 h-5 p-4 text-xl bg-[#C07F00]/90 border rounded-full"
         >
        -
@@ -50,14 +49,14 @@ const CartItem: React.FC<CartItemProps> = ({ CartID, imageURL, name, details, qu
           data-input-counter
           className="flex-shrink-0 text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center"
           placeholder=""
-          value={Quantity}
+          value={quantity}
           required
         />
         <button
           type="button"
           id="increment-button"
           data-input-counter-increment="counter-input"
-          onClick={()=>setQuantity(Quantity+1)}
+          onClick={()=>{HandleQuantityChange(CartID,quantity+1)}}
           className="inline-flex items-center justify-center w-5 h-5 p-4 text-xl  bg-[#C07F00]/90 border rounded-full"
         >+
         </button>
