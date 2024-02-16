@@ -49,13 +49,9 @@ export default function Header() {
               </button>
             </div>
           ) : (
-            <div className='flex flex-col items-center gap-2 mt-10 lg:gap-4 lg:flex-row lg:mt-0'>
-              <button
-                className="inline-flex justify-center items-center py-2 w-32 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] rounded-lg"
-                onClick={() => { navigation("/sign-up"); closeMobileMenu(); }}
-              >
-                Sign Up
-              </button>
+            <div className='flex flex-col items-center mt-10 space-x-10 lg:gap-4 lg:flex-row lg:mt-0'>
+               <Link to="/cart" className='flex gap-2 text-center justify-center items-center text-white hover:text-[#C07F00]/90' onClick={closeMobileMenu}>
+                <IoCartSharp size={28}/><span>Cart</span></Link>
               <button
                 className="inline-flex justify-center items-center py-2 w-32 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] rounded-lg"
                 onClick={() => { navigation("/sign-in"); closeMobileMenu(); }}

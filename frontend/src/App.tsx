@@ -9,6 +9,7 @@ import HomeLayout from '@/pages/home/Home/HomeLayout';
 import Home from '@/pages/home/page';
 import ProductPage from '@/pages/product/page';
 import ProductView from './components/Product/ProductView';
+import CartPage from './components/cart/Cart';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/" element={<HomeLayout/>} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/product/:id" element={<ProductView/>} />
+        <Route path="/cart" element={<CartPage/>} />
       </Route>
       </Routes>
     </main>
