@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, text, ForeignKey, DECIMAL, LargeBinary, UUID
+from sqlalchemy import Column, String, Boolean, Integer, TIMESTAMP, text,Float, ForeignKey, DECIMAL, LargeBinary, UUID
 from sqlalchemy.dialects.postgresql import UUID as PostgreSQLUUID
 from .database import Base
 from sqlalchemy.orm import relationship
@@ -50,5 +50,23 @@ class Address(Base):
     door_no = Column(String, nullable=False)
     landmark = Column(String)
     pincode = Column(String)
-    UserID = Column(UUID(as_uuid=True), ForeignKey('Users.id'), nullable=False)
+    UserID = Column(PostgreSQLUUID(as_uuid=True), ForeignKey('Users.id'))
     user = relationship("User", back_populates="addresses")
+    
+
+class Order(Base):
+    __tablename__ = "orders"
+    id = Column(Integer, primary_key=True, index=True)
+    UserID = Column(PostgreSQLUUID(as_uuid=True), ForeignKey('Users.id'))
+    total_price = Column(Float)
+    items = relationship("OrderItem", back_populates="order")
+
+class OrderItem(Base):
+    __tablename__ = "order_items"
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"))
+    item_id = Column(Integer, ForeignKey('Products.ProductID'))
+    quantity = Column(Integer)
+    order = relationship("Order", back_populates="items")
+    item = relationship("Product")
+    

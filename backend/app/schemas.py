@@ -20,7 +20,7 @@ class UserOut(BaseModel):
     username: str
     email: str
     created_at: datetime
-    user_id: UUID  # Assuming user_id is of type UUID in your User model
+    id: UUID  # Assuming user_id is of type UUID in your User model
 
 class UserLogin(BaseModel):
     username: str
@@ -101,3 +101,40 @@ class CartOut(BaseModel):
     ProductID: int
     Quantity: int
     Product_info:CartProduct
+
+
+
+class AddressCreate(BaseModel):
+    door_no: str
+    landmark: str
+    pincode: str
+
+class AddressUpdate(BaseModel):
+    door_no: str = None
+    landmark: str = None
+    pincode: str = None
+    
+
+class AddressResponse(BaseModel):
+    AddressID: int
+    door_no: str
+    landmark: str = None
+    pincode: str
+
+
+
+class AddressCreateResponse(BaseModel):
+    message: str = "Address created successfully"
+    door_no: str
+    landmark: str = None
+    pincode: str
+
+
+class AddressUpdateResponse(BaseModel):
+    message: str = "Address updated successfully"
+    address: AddressResponse
+
+
+class AddressDeleteResponse(BaseModel):
+    message: str = "Address deleted successfully"
+    address: AddressResponse

@@ -15,7 +15,6 @@ def get_db():
         db = SessionLocal()
         yield db
     except SQLAlchemyError as e:
-        # Log the error or handle it as needed
         print(f"Database error: {e}")
         raise
     finally:
