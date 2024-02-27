@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@/components/common/ui/Avatar';
-import logo from "@/assets/images/logo.png";
+import logo from "/assets/images/logo.png";
 import { IoCartSharp } from "react-icons/io5";
 
 export default function Header() {

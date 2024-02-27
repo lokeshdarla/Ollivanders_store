@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { UserContext } from '@/context/userContextProvider';
-import logo from '@/assets/images/logo.png'
-import hero from '@/assets/hero.png'
+import logo from '/assets/images/logo.png'
+import hero from '/assets/hero.png'
 import { Link } from 'react-router-dom';
 interface AuthLayoutProps {
   children: ReactNode;

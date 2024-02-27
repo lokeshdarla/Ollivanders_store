@@ -7,7 +7,7 @@ from fastapi import APIRouter
 import stripe
 from ..config import settings
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+
 
 
 router = APIRouter(
@@ -85,18 +85,21 @@ async def checkout(db: Session = Depends(get_db), current_user: dict = Depends(o
 @router.post("/process-payment/")
 async def process_payment(db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     checkout_data=create_checkout(db,current_user)
-    try:
-        charge = stripe.Charge.create(
-            amount=checkout_data.total_price,
-            currency="inr",
-            description="Payment for FastAPI Store",
-        )
 
-        return {"status": "success", "charge_id": charge.id}
+    # charge = stripe.Charge.create(
+    #         amount=checkout_data.total_price,
+    #         currency="inr",
+    #         description="Payment for FastAPI Store",
+    #     )
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    payment_intent = stripe.PaymentIntent.create(
+        amount=int(checkout_data.total_price * 100),  # Stripe amounts are in cents
+        currency="inr",
+        description="Payment for FastAPI Store",
+    )
+    print(payment_intent)
+    return payment_intent
 
-    except stripe.error.CardError as e:
-        return {"status": "error", "message": str(e)}
-    except stripe.error.StripeError as e:
-        return {"status": "error", "message": "Something went wrong. Please try again later."}
+      
 
   

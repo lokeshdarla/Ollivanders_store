@@ -153,3 +153,7 @@ class Checkout(BaseModel):
 class OrderResponse(BaseModel):
     OrderID:int
     TotalPrice:float
+
+
+class PaymentResponse(BaseModel):
+    client_secret: str

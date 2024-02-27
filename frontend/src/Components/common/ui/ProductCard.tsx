@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useCart } from '@/context/cartContextProvider';
 
 interface Product {
   id: string;
@@ -8,19 +9,31 @@ interface Product {
   image: ImageBitmap;
 }
 
+
+interface CartItem {
+  id: number;
+  ProductName: string;
+  description: string;
+  Price: number;
+  quantity: number;
+  imageURL: string;
+}
+
 interface ProductCardProps {
   wand: Product;
   addCart: (productId: string, quantity: number) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ wand, addCart }) => {
+
+const {addToCart} = useCart();
   return (
     <div key={wand.id} className=" mx-5 w-lg bg-transparent shadow flex-col items-center border rounded-lg border-[#C07F00]/90 ">
       <Link to={`/product/${wand.id}`}>
         <div className="flex justify-center h-64 px-5 overflow-hidden rounded">
           <img
             className="p-5 transition-transform transform rounded-full object-fit hover:scale-105"
-            src={wand.image}
+            src='/assets/Harry.webp'
             alt="product image"
           />
         </div>
@@ -36,10 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ wand, addCart }) => {
             <button
               className="inline-flex justify-center items-center px-3 py-1 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] shadow-inner"
               onClick={() => {
-                const productId = wand.id;
-                console.log(productId);
-                const quantity = 1;
-                addCart(productId, quantity);
+               addToCart(wand);
               }}
             >
               Add to Cart

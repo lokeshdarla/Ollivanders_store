@@ -1,6 +1,5 @@
 // ProductView.js
 import React from 'react';
-import harry from '@/assets/Harry.webp'
 import TopProduct from './TopProduct';
 
 
@@ -12,7 +11,7 @@ const Product={
       'The wand that chose Harry Potter, the Boy Who Lived, when he visited Ollivanders Wand shop at 11 years of age.',
     Price: 999.99,
     quantity: 10,
-    image: harry,
+    image: '/assets/Harry.webp',
   }
 
 const ProductView = () => {

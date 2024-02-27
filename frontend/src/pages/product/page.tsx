@@ -1,5 +1,5 @@
 import React from 'react'
-import Harry from '@/assets/Harry.webp'
+import Harry from '/assets/Harry.webp'
 import ProductCard from '@/components/common/ui/ProductCard';
 
 

@@ -17,7 +17,7 @@ const defaultCartItems: CartItem[] = [
       'The wand that chose Harry Potter, the Boy Who Lived, when he visited Ollivanders Wand shop at 11 years of age.',
     Price: 999.99,
     quantity: 10,
-    imageURL: '@/assets/harrpotter.webp',
+    imageURL: '/assets/harrpotter.webp',
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const defaultCartItems: CartItem[] = [
       "Take home the wand of Hermione Granger, founding member of Dumbledore’s Army, best friend to Ron and Harry and often called the brightest witch of her age.",
     Price: 999.99,
     quantity: 10,
-    imageURL: '@/assets/harrpotter.webp',
+    imageURL: '/assets/harrpotter.webp',
   },
 ];
 

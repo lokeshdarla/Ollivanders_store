@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Trash } from 'lucide-react';
-import harry from '@/assets/Harry.webp'
+import harry from '/assets/Harry.webp'
 
 interface CartItemProps {
   CartID: number;
-  imageURL: string;
+  imageURL: '/assets/Harry.webp';
   name: string;
   details: string;
   quantity: number;
