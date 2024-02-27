@@ -79,7 +79,7 @@ class CartProduct(BaseModel):
 
 class CartBase(BaseModel):
     ProductID: int
-    Quantity: int
+    Quantity: int = 1
 
 class CartCreate(CartBase):
     pass
@@ -138,3 +138,18 @@ class AddressUpdateResponse(BaseModel):
 class AddressDeleteResponse(BaseModel):
     message: str = "Address deleted successfully"
     address: AddressResponse
+
+class CheckoutItem(BaseModel):
+    ProductID:int
+    CartID: int
+    Quantity: int
+    Price:int 
+    ProductName:str
+
+class Checkout(BaseModel):
+    Items:list[CheckoutItem]
+    total_price:float
+
+class OrderResponse(BaseModel):
+    OrderID:int
+    TotalPrice:float
