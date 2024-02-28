@@ -20,20 +20,16 @@ def create_cart(
     db: Session = Depends(get_db),
     current_user: dict = Depends(oauth2.get_current_user)
 ):
-    # Check if the specified product exists
     product = db.query(models.Product).filter(models.Product.ProductID == cart.ProductID).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    # Check if the specified quantity is valid
     if cart.Quantity <= 0:
         raise HTTPException(status_code=400, detail="Invalid quantity. Quantity must be greater than 0.")
 
-    # Check if the specified quantity is available in stock
     if product.units is not None and cart.Quantity > product.units:
         raise HTTPException(status_code=400, detail="Insufficient stock. Cannot add more items than available.")
 
-    # Create the cart entry
     db_cart = models.Cart(**cart.dict(), UserID=current_user.id)
     db.add(db_cart)
     db.commit()
@@ -46,52 +42,54 @@ def create_cart(
 def read_carts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     user_id = current_user.id
     cart_items = (
-        db.query(models.Cart, models.Product, models.ProductImage)
+        db.query(models.Cart, models.Product)
         .join(models.Product, models.Product.ProductID == models.Cart.ProductID)
-        .join(models.ProductImage, models.Product.ImageID == models.ProductImage.ImageID)
         .filter(models.Cart.UserID == user_id)
         .offset(skip)
         .limit(limit)
         .all()
         )
     cart_list = []
-    for cart_item, product, image in cart_items:
+    for cart_item, product in cart_items:
         cart_out = schemas.CartOut(
             CartID=cart_item.CartID,
             ProductID=cart_item.ProductID,
             Quantity=cart_item.Quantity,
-            Product_info=schemas.CartProduct(
-                ProductName=product.ProductName,
-                Description=product.Description,
-                Price=float(product.Price),
-                image=schemas.ImageOUT(
-                    ImageID=image.ImageID,
-                    Image=base64.b64encode(image.Image).decode('utf-8')
-                )
-            )
+            ProductName=product.ProductName,
+            Description=product.Description,
+            Price=product.Price,
+            imageURL=product.ImageURL,
         )
         cart_list.append(cart_out)
 
     return cart_list
 
 @router.get("/{cart_id}", response_model=schemas.CartOut)
-def read_cart(cart_id: int, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
+def read_cart(
+    cart_id: int, 
+    db: Session = Depends(get_db), 
+    current_user: dict = Depends(oauth2.get_current_user)
+):
     user_id = current_user.id
-    cart_item = db.query(models.Cart).filter(models.Cart.CartID == cart_id, models.Cart.UserID == user_id).first()
 
-    if cart_item is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cart Not Found")
+    cart_item, product = (
+        db.query(models.Cart, models.Product)
+        .join(models.Product, models.Product.ProductID == models.Cart.ProductID)
+        .filter(models.Cart.UserID == user_id, models.Cart.CartID == cart_id)
+        .first()
+    )
 
-    product_info = db.query(models.Product).filter(models.Product.ProductID == cart_item.ProductID).first()
+    if not cart_item:
+        raise HTTPException(status_code=404, detail="Cart not found")
+
     cart_out = schemas.CartOut(
         CartID=cart_item.CartID,
         ProductID=cart_item.ProductID,
         Quantity=cart_item.Quantity,
-        Product_info=schemas.CartProduct(
-            ProductName=product_info.ProductName,
-            Description=product_info.Description,
-            Price=float(product_info.Price),
-        )
+        ProductName=product.ProductName,
+        Description=product.Description,
+        Price=product.Price,
+        imageURL=product.ImageURL,
     )
 
     return cart_out

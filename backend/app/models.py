@@ -16,11 +16,11 @@ class User(Base):
     carts = relationship("Cart", back_populates="user")
     addresses = relationship("Address", back_populates="user")
 
-class ProductImage(Base):
-    __tablename__ = 'ProductsImages'
+# class ProductImage(Base):
+#     __tablename__ = 'ProductsImages'
 
-    ImageID = Column(Integer, primary_key=True, autoincrement=True)
-    Image = Column(LargeBinary)
+#     ImageID = Column(Integer, primary_key=True, autoincrement=True)
+#     Image = Column(LargeBinary)
 
 class Product(Base):
     __tablename__ = 'Products'
@@ -30,8 +30,10 @@ class Product(Base):
     Description = Column(String, nullable=False)
     Price = Column(DECIMAL(10, 2))
     units = Column(Integer, nullable=False)
-    ImageID = Column(Integer, ForeignKey('ProductsImages.ImageID'))
-    image = relationship("ProductImage")
+    ImageURL=Column(String,nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False, server_default=text('now()'))
+    # ImageID = Column(Integer, ForeignKey('ProductsImages.ImageID'))
+    # image = relationship("ProductImage")
 
 class Cart(Base):
     __tablename__ = 'cart'

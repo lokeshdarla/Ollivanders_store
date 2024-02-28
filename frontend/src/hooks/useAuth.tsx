@@ -1,73 +1,71 @@
-import { jwtDecode } from 'jwt-decode';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface User {
-  // Define the structure of your user object here
-  // For example:
-  id: string;
-  username: string;
-  picture?:string;
-  exp:number;
-  // ... other properties
+  id: string
+  email: string
+  name: string
+  admin: boolean
+  exp: number
 }
 
 interface AuthResult {
-  user: User | null;
-  logout: () => void;
+  user: User | null
+  logout: () => void
 }
 
 export default function useAuth(): AuthResult {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const fetchData = async () => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
-      const accessToken = getAccessToken();
-      const decodedAccessToken = jwtDecode(accessToken) as User; // Adjust the type based on your user object
+      const accessToken = getAccessToken()
+      const decodedAccessToken = jwtDecode<User>(accessToken)
 
       if (decodedAccessToken.exp * 1000 < Date.now()) {
-        throw new Error('Access token expired.');
+        throw new Error('Access token expired.')
       }
 
-      setUser(decodedAccessToken);
+      setUser(decodedAccessToken)
     } catch (error) {
-      setError('Error fetching user data: ' + error);
+      setError('Error fetching user data: ' + error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const getAccessToken = (): string => {
-    const accessTokenFromUrl = new URLSearchParams(window.location.search).get('token');
-    const accessTokenFromLocalStorage = localStorage.getItem('accessToken');
+    const accessTokenFromUrl = new URLSearchParams(window.location.search).get('token')
+    const accessTokenFromLocalStorage = localStorage.getItem('accessToken')
 
     if (accessTokenFromUrl) {
-      localStorage.setItem('accessToken', accessTokenFromUrl);
-      window.history.replaceState({}, '', window.location.pathname);
-      return accessTokenFromUrl;
+      localStorage.setItem('accessToken', accessTokenFromUrl)
+      window.history.replaceState({}, '', window.location.pathname)
+      return accessTokenFromUrl
     } else if (accessTokenFromLocalStorage) {
-      return accessTokenFromLocalStorage;
+      return accessTokenFromLocalStorage
     } else {
-      throw new Error('Access token not found in local storage.');
+      throw new Error('Access token not found in local storage.')
     }
-  };
+  }
 
   const logout = (): void => {
-    localStorage.removeItem('accessToken');
-    navigate('/');
-    setUser(null);
-  };
+    localStorage.removeItem('accessToken')
+    navigate('/')
+    setUser(null)
+  }
 
   useEffect(() => {
-    fetchData();
-  }, [navigate]);
+    fetchData()
+  }, [navigate])
 
-  return { user, logout };
+  return { user, logout }
 }

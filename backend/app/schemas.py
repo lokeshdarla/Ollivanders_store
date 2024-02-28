@@ -45,7 +45,7 @@ class ProductBase(BaseModel):
     Description: str
     Price: float
     units: int
-    ImageID:int
+    ImageURL:str
 
 
 
@@ -56,20 +56,26 @@ class ProductUpdate(ProductBase):
     pass
 
 
-class ImageOUT(BaseModel):
-    ImageID: int
-    Image: bytes 
+# class ImageOUT(BaseModel):
+#     ImageID: int
+#     Image: bytes 
 
-class ProductOut(BaseModel):
-    ProductID: int
-    ProductName: str
-    Description: str
-    Price: float
-    units: int
-    image: ImageOUT
+# class ProductOut(BaseModel):
+#     ProductID: int
+#     ProductName: str
+#     Description: str
+#     Price: float
+#     units: int
+#     image: ImageOUT
 
-    class Config:
-        arbitrary_types_allowed = True
+#     class Config:
+#         arbitrary_types_allowed = True
+
+
+class ProductOut(ProductBase):
+    ProductID:int
+    created_at:datetime
+    pass
 
 class CartProduct(BaseModel):
     ProductName: str
@@ -94,13 +100,17 @@ class CartProduct(BaseModel):
     ProductName: str
     Description: str
     Price: float
-    image: ImageOUT
+    imageURL:str
+    # image: ImageOUT
 
 class CartOut(BaseModel):
     CartID:int
     ProductID: int
     Quantity: int
-    Product_info:CartProduct
+    ProductName: str
+    Description: str
+    Price: float
+    imageURL:str
 
 
 
