@@ -1,86 +1,71 @@
-import React, { useState, useEffect } from "react";
-import CartItem from "@/components/common/ui/CartItem";
-import { Link } from 'react-router-dom';
-import { fetchCartItems, removeCartItem, updateCartItemQuantity} from "@/services/cart";
-import { useCart } from '@/context/cartContextProvider';
-
+import React, { useState, useEffect } from 'react'
+import CartItem from '@/components/common/ui/CartItem'
+import { Link } from 'react-router-dom'
+import { fetchCartItems, removeCartItem, updateCartItemQuantity } from '@/services/cart'
+import { useCart } from '@/context/cartContextProvider'
+import { CartItemInterface } from '@/constants'
 
 interface CartItem {
-  id: number;
-  ProductName: string;
-  description: string;
-  Price: number;
-  quantity: number;
-  imageURL: string;
+  id: number
+  ProductName: string
+  description: string
+  Price: number
+  quantity: number
+  imageURL: string
 }
 
-
 const CartPage: React.FC = () => {
-  const { cartItems, addToCart, removeFromCart,updateCartItemsQuantity } = useCart();
-  const [price, setPrice] = useState<number>(0);
+  const [cartItems, setCartItems] = useState<CartItemInterface[]>([])
+  // const { cartItems, addToCart, removeFromCart,updateCartItemsQuantity } = useCart();
+  const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
-    const token: string | null = localStorage.getItem("accessToken");
+    const token: string | null = localStorage.getItem('accessToken')
 
     if (token) {
-      fetchCartItems(token)
+      fetchCartItems()
         .then((response) => {
-          setCartItems(response);
-          calculateTotal(response);
-          console.log(response);
+          setCartItems(response)
+          calculateTotal(response)
+          console.log(response)
         })
         .catch((error) => {
-          console.error('Error fetching cart items:', error);
-        });
+          console.error('Error fetching cart items:', error)
+        })
     }
-  calculateTotal(cartItems);
-  }, []);
+    calculateTotal(cartItems)
+  }, [])
 
   const handleDelete = (productId: number) => {
-    const token: string | null = localStorage.getItem("accessToken");
+    const token: string | null = localStorage.getItem('accessToken')
     if (token) {
       removeCartItem(productId, token)
         .then(() => {
-         removeFromCart(productId);
+          removeFromCart(productId)
         })
         .catch((error) => {
-          console.error('Error removing item from cart:', error);
-        });
+          console.error('Error removing item from cart:', error)
+        })
     } else {
-      removeFromCart(productId);
+      removeFromCart(productId)
     }
-  };
+  }
 
   const quantityChange = (cartId: number, newQuantity: number) => {
-    const token: string | null = localStorage.getItem("accessToken");
-  
-    if (token) {
-      updateCartItemQuantity(cartId, newQuantity, token)
-        .then(() => {
-          updateCartItemsQuantity(cartId,newQuantity);
-        })
-        .catch((error) => {
-          console.error('Error updating cart quantity:', error);
-        });
-    } else {
-      updateCartItemsQuantity(cartId,newQuantity);
-      console.log('User not authenticated. Updating cart quantity locally.');
-    }
-  };
-  
-  
+    updateCartItemQuantity(cartId, newQuantity)
+  }
 
   const calculateTotal = (cartItems: CartItem[]) => {
-    let totalPrice = 0;
+    let totalPrice = 0
 
     for (const cartItem of cartItems) {
-      totalPrice += cartItem.Price * cartItem.quantity;
+      totalPrice += cartItem.Price * cartItem.quantity
     }
 
-    totalPrice += 4.99;
-    setPrice(totalPrice);
-  };
-  
+    totalPrice += 4.99
+    setPrice(totalPrice)
+  }
+
   return (
     <div className="relative text-white bg-transparent ">
       <h1 className="mb-10 text-2xl font-bold text-center">Cart Items</h1>
@@ -127,14 +112,12 @@ const CartPage: React.FC = () => {
                 <p className="mb-1 text-lg font-bold">{price}</p>
               </div>
             </div>
-            <button className="mt-6 w-full rounded-md  bg-[#C07F00]/90 py-1.5 font-medium text-blue-50 ">
-              Check out
-            </button>
+            <button className="mt-6 w-full rounded-md  bg-[#C07F00]/90 py-1.5 font-medium text-blue-50 ">Check out</button>
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CartPage;
+export default CartPage

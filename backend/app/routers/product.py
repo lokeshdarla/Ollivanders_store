@@ -74,19 +74,20 @@ def get_products(
     skip: int = Query(0, alias="page", ge=0),
     limit: int = Query(100, le=100),
     search: str = Query("", description="Search query for products"),
-    sort_by_price: bool = Query(False, description="Sort by price (low to high)"),
-    new_in: bool = Query(False, description="Filter new products"),
+    query: str = Query(None, description="query for filtering"),
     db: Session = Depends(get_db),
 ):
     products = db.query(models.Product).filter(
     models.Product.ProductName.ilike(f"%{search}%")
     )
 
-    if sort_by_price:
-        products = products.order_by(models.Product.Price)
-
-    if new_in:
-        products = products.order_by(desc(models.Product.created_at))
+    if query:
+        if query.lower() == "low":
+             products = products.order_by((models.Product.Price))
+        elif query.lower() =="high":
+            products=products.order_by(desc(models.Product.Price))
+        elif query.lower() =="new-in":  
+            products = products.order_by(desc(models.Product.created_at))
 
     products = products.offset(skip).limit(limit).all()
     return products or []
