@@ -1,4 +1,4 @@
-from fastapi import Body, APIRouter, Depends, HTTPException, status
+from fastapi import Body, APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from ..database import get_db
@@ -96,11 +96,22 @@ def read_cart(
 
 
 @router.patch("/{cart_id}")
-def update_cart(cart_id: int, cart_update: schemas.CartUpdate, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
-    db_cart = db.query(models.Cart).filter(models.Cart.CartID == cart_id, models.Cart.UserID == current_user.id).first()
+def update_cart(
+    cart_id: int, cart_update: schemas.CartUpdate, db: Session = Depends(get_db),
+    current_user: dict = Depends(oauth2.get_current_user)
+):
+    if cart_update.Quantity < 0:
+        raise HTTPException(status_code=400, detail="Quantity must be a non-negative integer.")
+
+    db_cart = db.query(models.Cart).filter(
+        models.Cart.CartID == cart_id, models.Cart.UserID == current_user.id
+    ).first()
 
     if db_cart:
-        product = db.query(models.Product).filter(models.Product.ProductID == db_cart.ProductID).first()
+        product = db.query(models.Product).filter(
+            models.Product.ProductID == db_cart.ProductID
+        ).first()
+
         if not product:
             raise HTTPException(status_code=404, detail="Product not found")
 
@@ -110,7 +121,9 @@ def update_cart(cart_id: int, cart_update: schemas.CartUpdate, db: Session = Dep
             return {"detail": "Deleted Successfully"}
 
         if product.units is not None and cart_update.Quantity > product.units:
-            raise HTTPException(status_code=400, detail="Insufficient stock. Cannot update to more items than available.")
+            raise HTTPException(
+                status_code=400, detail="Insufficient stock. Cannot update to more items than available."
+            )
 
         db_cart.Quantity = cart_update.Quantity
         db.commit()

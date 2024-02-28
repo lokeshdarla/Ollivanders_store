@@ -9,6 +9,7 @@ import { addToCart } from '@/services/cart'
 const ProductView = () => {
   const [product, setProduct] = React.useState<Product>()
   const { ProductId } = useParams<{ ProductId: string }>()
+  const [quantity, setQuantity] = React.useState<number>(1)
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,12 +38,15 @@ const ProductView = () => {
           <div className="space-y-5">
             <p className="font-thin ">{product?.Description}</p>
             <div className="flex space-x-10">
-              {/* <form className="">
+              <form className="">
                 <label htmlFor="counter-input" className="block mb-2 text-md font-medium text-[#C07F00]/90 dark:text-white">
                   Choose quantity:
                 </label>
                 <div className="relative flex items-center">
                   <button
+                    onClick={() => {
+                      if (quantity >= 2) setQuantity((prev) => prev - 1)
+                    }}
                     type="button"
                     id="decrement-button"
                     data-input-counter-decrement="counter-input"
@@ -51,16 +55,18 @@ const ProductView = () => {
                     -
                   </button>
                   <input
-                    type="text"
+                    type="number"
                     id="counter-input"
-                    data-input-counter
-                    className="flex-shrink-0 text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center"
-                    placeholder=""
-                    value="12"
+                    min={1}
+                    className="p-2 flex-shrink-0 text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center"
+                    value={quantity}
                     required
                   />
                   <button
                     type="button"
+                    onClick={() => {
+                      setQuantity((prev) => prev + 1)
+                    }}
                     id="increment-button"
                     data-input-counter-increment="counter-input"
                     className="inline-flex items-center justify-center w-5 h-5 p-4 text-xl  bg-[#C07F00]/90 border rounded-full"
@@ -68,12 +74,15 @@ const ProductView = () => {
                     +
                   </button>
                 </div>
-              </form> */}
+              </form>
               <button
                 onClick={async () => {
                   if (ProductId) {
                     try {
-                      await addToCart(ProductId)
+                      await addToCart({
+                        ProductID: product?.ProductID || 0,
+                        Quantity: quantity,
+                      })
                     } catch (error) {
                       console.error('Error adding to cart:', error)
                     }

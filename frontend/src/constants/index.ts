@@ -10,10 +10,16 @@ export interface Product {
 
 
 export interface CartItemInterface{
-  id: number
+  CartID: number
+  ProductID: number
+  Quantity: number
   ProductName: string
-  description: string
+  Description: string
   Price: number
-  quantity: number
-  imageURL: string
+  imageURL:string
+}
+
+export interface cartAdd{
+  ProductID:number
+  Quantity:number 
 }

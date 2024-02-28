@@ -10,10 +10,12 @@ import Home from '@/pages/home/page'
 import ProductPage from '@/pages/product/page'
 import ProductView from './components/Product/ProductView'
 import CartPage from './components/cart/Cart'
+import { Toaster } from 'react-hot-toast'
 
 const App = () => {
   return (
     <main className="absolute flex items-center justify-center w-full">
+      <Toaster />
       <BackgroundAnimation />
       <Routes>
         {/* Public routes */}

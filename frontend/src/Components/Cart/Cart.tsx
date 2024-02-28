@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import CartItem from '@/components/common/ui/CartItem'
 import { Link } from 'react-router-dom'
-import { fetchCartItems, removeCartItem, updateCartItemQuantity } from '@/services/cart'
-import { useCart } from '@/context/cartContextProvider'
+import { fetchCartItems } from '@/services/cart'
 import { CartItemInterface } from '@/constants'
-
-interface CartItem {
-  id: number
-  ProductName: string
-  description: string
-  Price: number
-  quantity: number
-  imageURL: string
-}
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItemInterface[]>([])
-  // const { cartItems, addToCart, removeFromCart,updateCartItemsQuantity } = useCart();
   const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -36,30 +25,11 @@ const CartPage: React.FC = () => {
     calculateTotal(cartItems)
   }, [])
 
-  const handleDelete = (productId: number) => {
-    const token: string | null = localStorage.getItem('accessToken')
-    if (token) {
-      removeCartItem(productId, token)
-        .then(() => {
-          removeFromCart(productId)
-        })
-        .catch((error) => {
-          console.error('Error removing item from cart:', error)
-        })
-    } else {
-      removeFromCart(productId)
-    }
-  }
-
-  const quantityChange = (cartId: number, newQuantity: number) => {
-    updateCartItemQuantity(cartId, newQuantity)
-  }
-
-  const calculateTotal = (cartItems: CartItem[]) => {
+  const calculateTotal = (cartItems: CartItemInterface[]) => {
     let totalPrice = 0
 
     for (const cartItem of cartItems) {
-      totalPrice += cartItem.Price * cartItem.quantity
+      totalPrice += cartItem.Price * cartItem.Quantity
     }
 
     totalPrice += 4.99
@@ -74,15 +44,14 @@ const CartPage: React.FC = () => {
           <div className="rounded-lg ">
             {cartItems.map((cart) => (
               <CartItem
-                key={cart.id}
-                CartID={cart.id}
+                key={cart.CartID}
+                CartID={cart.CartID}
+                ProductID={cart.ProductID}
                 imageURL={cart.imageURL}
-                name={cart.ProductName}
-                details={cart.description}
-                quantity={cart.quantity}
-                price={cart.Price}
-                handleDelete={handleDelete}
-                HandleQuantityChange={quantityChange}
+                ProductName={cart.ProductName}
+                Description={cart.Description}
+                Quantity={cart.Quantity}
+                Price={cart.Price}
               />
             ))}
           </div>
