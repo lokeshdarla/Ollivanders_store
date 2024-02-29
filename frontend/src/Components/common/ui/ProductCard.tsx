@@ -7,7 +7,7 @@ interface ProductCardProps {
   addCart: (productId: number, quantity: number) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, addCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div key={product.ProductID} className=" mx-5 w-lg bg-transparent shadow flex-col items-center border rounded-lg border-[#C07F00]/90 ">
       <Link to={`/product/${product.ProductID}`}>
@@ -24,14 +24,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, addCart }) => {
         <div className="flex items-center justify-between">
           <span className="font-bold text-white text-md">{product.Price}</span>
           <div className=" border border-[#C07F00]/90">
-            <button
+            <Link
               className="inline-flex justify-center items-center px-3 py-1 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] shadow-inner"
-              onClick={() => {
-                addCart(product.ProductID, 1)
-              }}
+              to={'/product/${product.ProductID}'}
             >
-              Add to Cart
-            </button>
+              View
+            </Link>
           </div>
         </div>
       </div>

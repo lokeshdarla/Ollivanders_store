@@ -40,7 +40,7 @@ export default function Header() {
           </div>
           {mobileMenuOpen && (
             <div className="relative z-10">
-              <div className="fixed right-0 z-10 flex flex-col items-start justify-start h-screen gap-6 p-4 overflow-y-auto bg-black top-4 lg:hidden">
+              <div className="fixed top-0 right-0 z-10 flex flex-col items-start justify-start h-screen gap-6 p-4 overflow-y-auto text-2xl bg-black lg:hidden">
                 <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-3 bg-[#C07F00] text-white rounded-full">
                   <FaArrowRight />
                 </button>

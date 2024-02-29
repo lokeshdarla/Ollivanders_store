@@ -1,5 +1,4 @@
 import React from 'react'
-import Harry from '/assets/Harry.webp'
 import ProductCard from '@/components/common/ui/ProductCard'
 import axios from 'axios'
 import { Product } from '@/constants'
@@ -8,6 +7,7 @@ const filters = [
   { id: 1, value: 'high', label: 'High to Low' },
   { id: 2, value: 'low', label: 'Low to High' },
   { id: 3, value: 'new-in', label: 'New In' },
+  { id: 4, value: 'Clear', label: 'Clear' },
 ]
 
 function ProductPage() {
@@ -33,8 +33,8 @@ function ProductPage() {
   }
 
   return (
-    <div className="relative flex items-start justify-center w-full py-10">
-      <div className="flex items-center justify-center w-1/4 ">
+    <div className="relative flex flex-col items-center w-full py-10 justify-cente lg:items-start lg:flex-row">
+      <div className="items-center justify-center hidden w-1/4 lg:flex">
         <div className="flex flex-col items-start justify-center">
           <div>
             <input
@@ -76,7 +76,40 @@ function ProductPage() {
         </div>
       </div>
 
-      <div className="grid w-3/4 grid-cols-3 gap-y-10">
+      <div className="flex items-start justify-center lg:hidden">
+        <div className="flex flex-col items-start justify-center">
+          <div>
+            <input
+              type="text"
+              onChange={(e) => {
+                setSearchInput(e.target.value)
+              }}
+              placeholder="search for harry potter"
+              className="px-6 py-2 mb-4 focus:outline-none bg-black border-[#C07F00]/90 border rounded-md text-white"
+            />
+          </div>
+          <div className="flex items-center mb-4">
+            <label htmlFor="sort" className="text-lg font-medium text-[#C07F00]/90 mr-2">
+              Sort By:
+            </label>
+            <select
+              id="sort"
+              onChange={(e) => {
+                setFilter(e.target.value)
+              }}
+              className="w-32 p-2 border border-gray-300 focus:ring-yellow-500"
+            >
+              {filters.map((avail_filter) => (
+                <option key={avail_filter.id} value={avail_filter.value}>
+                  {avail_filter.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
         {products.map((product) => (
           <ProductCard key={product.ProductID} product={product} addCart={addCart} />
         ))}

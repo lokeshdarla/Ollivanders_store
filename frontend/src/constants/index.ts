@@ -20,7 +20,7 @@ export interface CartItemInterface{
 }
 
 export interface cartAdd{
-  CartID:number
+  ProductID:number
   Quantity:number
 }
 

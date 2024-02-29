@@ -26,11 +26,11 @@ const ProductView = () => {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="relative flex items-center justify-center">
-        <div className="flex items-center justify-center w-1/2">
-          <img className="transition-transform transform hover:scale-105 h-96" src={product?.ImageURL} alt="" />
+      <div className="relative flex flex-col items-center justify-center md:flex-row">
+        <div className="flex items-center justify-center md:w-1/2">
+          <img className="px-10 transition-transform transform md:px-0 hover:scale-105 h-96" src={product?.ImageURL} alt="" />
         </div>
-        <div className="flex flex-col items-start justify-center w-1/2 gap-5 px-20 text-white">
+        <div className="flex flex-col items-start justify-center gap-5 px-10 text-white lg:px-20 md:w-1/2">
           <h2 className="text-4xl text-[#C07F00]/90 ">{product?.ProductName}</h2>
           <div className="w-full border border-dotted border-[#C07F00]/90"></div>
           <h3 className="text-2xl font-bold">Rs: {product?.Price} INR</h3>
