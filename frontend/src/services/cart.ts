@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useState } from 'react';
 import { CartItemInterface } from '@/constants';
 import { cartAdd } from '@/constants';
 import { toast} from 'react-hot-toast';
@@ -9,6 +8,11 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const addToCart = async (cart: cartAdd) => {
   try {
     const token = localStorage.getItem('accessToken');
+    if(!token)
+    {
+      toast.error("You need to login first")
+      return
+    }
     const cartURL = `${BASE_URL}/cart`;
     const response = await axios.post(
       `${cartURL}/`, 
@@ -48,10 +52,10 @@ export const fetchCartItems = async (): Promise<CartItemInterface[]> => {
   }
 };
 
-export const removeCartItem = async (productId: number): Promise<void> => {
+export const removeCartItem = async (cartId: number): Promise<void> => {
   try {
     const token = localStorage.getItem('accessToken');
-    const deleteURL = `${BASE_URL}/cart/${productId}`;
+    const deleteURL = `${BASE_URL}/cart/${cartId}`;
     await axios.delete(deleteURL, {
       headers: {
         'Content-Type': 'application/json',
@@ -71,20 +75,25 @@ export const updateCartItemQuantity = async (cartId: number, newQuantity: number
   try {
     const token = localStorage.getItem('accessToken');
     const updateURL = `${BASE_URL}/cart/${cartId}`;
-    
-    const response = await fetch(updateURL, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ Quantity: newQuantity }),
-    });
-
-    if (!response.ok) {
-      console.error(`Error updating cart quantity. Status: ${response.status}`);
-      toast.error(`Error updating cart quantity. Status: ${response.status}`);
+    if(!token)
+    {
+      toast.error("You need to login first")
+      return
     }
+    const response = await axios.patch(
+      updateURL,
+      { 
+        Quantity: newQuantity,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success("quantiy updated successfully");
   } catch (error) {
     console.error('Error updating cart quantity:', error);
     toast.error('Error updating cart quantity');

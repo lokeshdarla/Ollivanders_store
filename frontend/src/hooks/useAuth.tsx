@@ -1,6 +1,7 @@
 import { jwtDecode } from 'jwt-decode'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 interface User {
   id: string
@@ -31,6 +32,9 @@ export default function useAuth(): AuthResult {
       const decodedAccessToken = jwtDecode<User>(accessToken)
 
       if (decodedAccessToken.exp * 1000 < Date.now()) {
+        toast.error('Sigin Expired, Signin again')
+        localStorage.removeItem('accessToken')
+        navigate('/sign-in')
         throw new Error('Access token expired.')
       }
 

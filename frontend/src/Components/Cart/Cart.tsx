@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import CartItem from '@/components/common/ui/CartItem'
 import { Link } from 'react-router-dom'
-import { fetchCartItems } from '@/services/cart'
+import { fetchCartItems, removeCartItem, updateCartItemQuantity } from '@/services/cart'
 import { CartItemInterface } from '@/constants'
+import toast from 'react-hot-toast'
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItemInterface[]>([])
+  const [load, setLoad] = useState<boolean>(false)
   const [price, setPrice] = useState<number>(0)
 
   useEffect(() => {
@@ -23,17 +25,36 @@ const CartPage: React.FC = () => {
         })
     }
     calculateTotal(cartItems)
-  }, [])
+  }, [load])
+
+  const handleUpdateQuantity = async (CartId: number, newQuantity: number) => {
+    try {
+      await updateCartItemQuantity(CartId, newQuantity)
+      setCartItems((prevCartItems) => prevCartItems.map((cartItem) => (cartItem.CartID === CartId ? { ...cartItem, Quantity: newQuantity } : cartItem)))
+
+      calculateTotal(cartItems.map((cartItem) => (cartItem.CartID === CartId ? { ...cartItem, Quantity: newQuantity } : cartItem)))
+    } catch (error) {
+      console.error('Error updating quantity:', error)
+    }
+  }
+
+  const handleDelete = async (CartId: number) => {
+    try {
+      await removeCartItem(CartId)
+      setLoad((prev) => !prev)
+    } catch (error) {
+      console.error('Error Deleting quantity:', error)
+    }
+  }
 
   const calculateTotal = (cartItems: CartItemInterface[]) => {
-    let totalPrice = 0
+    const totalPrice = cartItems.reduce((total, cartItem) => {
+      return total + cartItem.Price * cartItem.Quantity
+    }, 0)
 
-    for (const cartItem of cartItems) {
-      totalPrice += cartItem.Price * cartItem.Quantity
-    }
+    const finalPrice = totalPrice + 4.99
 
-    totalPrice += 4.99
-    setPrice(totalPrice)
+    setPrice(finalPrice)
   }
 
   return (
@@ -44,6 +65,8 @@ const CartPage: React.FC = () => {
           <div className="rounded-lg ">
             {cartItems.map((cart) => (
               <CartItem
+                updateCart={handleUpdateQuantity}
+                deleteCart={handleDelete}
                 key={cart.CartID}
                 CartID={cart.CartID}
                 ProductID={cart.ProductID}
@@ -58,7 +81,7 @@ const CartPage: React.FC = () => {
         ) : (
           <div className="flex flex-col items-center justify-center h-3/6">
             <h1 className="mb-4 text-3xl">Your cart is empty!</h1>
-            <Link to="/" className="flex items-center gap-2 text-[#C07F00]/90 text-lg text-center">
+            <Link to="/product" className="flex items-center gap-2 text-[#C07F00]/90 text-lg text-center">
               Continue Shopping
             </Link>
           </div>

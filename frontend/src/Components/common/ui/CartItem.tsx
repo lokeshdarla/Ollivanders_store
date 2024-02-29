@@ -1,9 +1,10 @@
 import React from 'react'
 import { removeCartItem, updateCartItemQuantity } from '@/services/cart'
 import { Trash } from 'lucide-react'
-import { CartItemInterface } from '@/constants'
+import { CartItemProps } from '@/constants'
+import toast from 'react-hot-toast'
 
-const CartItem: React.FC<CartItemInterface> = ({ CartID, ProductID, Quantity, ProductName, Description, Price, imageURL }) => {
+const CartItem: React.FC<CartItemProps> = ({ CartID, ProductID, Quantity, ProductName, Description, Price, imageURL, updateCart, deleteCart }) => {
   return (
     <div className="flex items-center gap-5 p-6 mb-6 rounded-lg border-2 border-dotted border-[#C07F00]/90">
       <div className="flex items-center gap-10 ">
@@ -24,7 +25,11 @@ const CartItem: React.FC<CartItemInterface> = ({ CartID, ProductID, Quantity, Pr
               id="decrement-button"
               data-input-counter-decrement="counter-input"
               onClick={() => {
-                updateCartItemQuantity(CartID, Quantity - 1)
+                if (Quantity > 1) {
+                  updateCart(CartID, Quantity - 1)
+                } else {
+                  toast.custom(<div>Hello World</div>)
+                }
               }}
               className="inline-flex items-center justify-center w-5 h-5 p-4 text-xl bg-[#C07F00]/90 border rounded-full"
             >
@@ -44,7 +49,7 @@ const CartItem: React.FC<CartItemInterface> = ({ CartID, ProductID, Quantity, Pr
               id="increment-button"
               data-input-counter-increment="counter-input"
               onClick={() => {
-                updateCartItemQuantity(CartID, Quantity + 1)
+                updateCart(CartID, Quantity + 1)
               }}
               className="inline-flex items-center justify-center w-5 h-5 p-4 text-xl  bg-[#C07F00]/90 border rounded-full"
             >

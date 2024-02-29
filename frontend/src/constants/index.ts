@@ -20,6 +20,12 @@ export interface CartItemInterface{
 }
 
 export interface cartAdd{
-  ProductID:number
-  Quantity:number 
+  CartID:number
+  Quantity:number
 }
+
+export interface CartItemProps extends CartItemInterface {
+  updateCart: (CartID:number,Quantity:number) => void
+  deleteCart: (CartID:number) => void
+}
+

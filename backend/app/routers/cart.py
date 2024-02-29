@@ -4,7 +4,6 @@ from typing import List
 from ..database import get_db
 from .. import schemas, models, oauth2
 from sqlalchemy import and_
-import base64
 
 router = APIRouter(
     prefix="/cart",
@@ -20,22 +19,35 @@ def create_cart(
     db: Session = Depends(get_db),
     current_user: dict = Depends(oauth2.get_current_user)
 ):
-    product = db.query(models.Product).filter(models.Product.ProductID == cart.ProductID).first()
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
+    cart_item = db.query(models.Cart).filter(
+        models.Cart.ProductID == cart.ProductID,
+        models.Cart.UserID == current_user.id,
+    ).first()
+    
+    if cart_item:
+        cart_item.Quantity += cart.Quantity
+        db.commit()
+        db.refresh(cart_item)
+        return cart_item
+    else :
+        product = db.query(models.Product).filter(models.Product.ProductID == cart.ProductID).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
 
-    if cart.Quantity <= 0:
-        raise HTTPException(status_code=400, detail="Invalid quantity. Quantity must be greater than 0.")
+        if cart.Quantity <= 0:
+            raise HTTPException(status_code=400, detail="Invalid quantity. Quantity must be greater than 0.")
 
-    if product.units is not None and cart.Quantity > product.units:
-        raise HTTPException(status_code=400, detail="Insufficient stock. Cannot add more items than available.")
+        if product.units is not None and cart.Quantity > product.units:
+            raise HTTPException(status_code=400, detail="Insufficient stock. Cannot add more items than available.")
+        
+    
 
-    db_cart = models.Cart(**cart.dict(), UserID=current_user.id)
-    db.add(db_cart)
-    db.commit()
-    db.refresh(db_cart)
+        db_cart = models.Cart(**cart.dict(), UserID=current_user.id)
+        db.add(db_cart)
+        db.commit()
+        db.refresh(db_cart)
 
-    return db_cart
+        return db_cart
 
 
 @router.get("/", response_model=List[schemas.CartOut])
@@ -95,11 +107,13 @@ def read_cart(
     return cart_out
 
 
+
 @router.patch("/{cart_id}")
 def update_cart(
     cart_id: int, cart_update: schemas.CartUpdate, db: Session = Depends(get_db),
     current_user: dict = Depends(oauth2.get_current_user)
 ):
+    print("Inside Cart Patch")
     if cart_update.Quantity < 0:
         raise HTTPException(status_code=400, detail="Quantity must be a non-negative integer.")
 
@@ -142,7 +156,7 @@ def delete_cart(cart_id: int, db: Session = Depends(get_db), current_user: dict 
     if db_cart:
         db.delete(db_cart)
         db.commit()
-        return {"detail":"Deleted Successfully"}  # Return None or any suitable response for a successful deletion
+        return {"detail":"Deleted Successfully"}
     else:
         raise HTTPException(status_code=404, detail=f"Cart with id {cart_id} not found")
 
