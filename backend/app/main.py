@@ -7,7 +7,6 @@ from .routers import user,auth,product,cart,address,order
 origins = [
     "*"
 ]
-#models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
 app.add_middleware(

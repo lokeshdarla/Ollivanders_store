@@ -68,8 +68,6 @@ class ProductUpdate(ProductBase):
 #     units: int
 #     image: ImageOUT
 
-#     class Config:
-#         arbitrary_types_allowed = True
 
 
 class ProductOut(ProductBase):
