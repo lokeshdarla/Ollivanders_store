@@ -3,6 +3,8 @@ import { CartItemInterface } from '@/constants';
 import { cartAdd } from '@/constants';
 import { toast} from 'react-hot-toast';
 
+
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const addToCart = async (cart: cartAdd) => {
@@ -10,7 +12,8 @@ export const addToCart = async (cart: cartAdd) => {
     const token = localStorage.getItem('accessToken');
     if(!token)
     {
-      toast.error("You need to login first")
+      
+      toast.error('You need to login first');
       return
     }
     const cartURL = `${BASE_URL}/cart`;

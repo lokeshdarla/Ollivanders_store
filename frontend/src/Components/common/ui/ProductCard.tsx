@@ -25,8 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="font-bold text-white text-md">{product.Price}</span>
           <div className=" border border-[#C07F00]/90">
             <Link
+              to={`/product/${product.ProductID}`}
               className="inline-flex justify-center items-center px-3 py-1 text-base font-medium text-center text-white bg-[#C07F00]/90 hover:bg-[#C07F00] shadow-inner"
-              to={'/product/${product.ProductID}'}
             >
               View
             </Link>

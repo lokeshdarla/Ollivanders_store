@@ -58,9 +58,9 @@ const CartPage: React.FC = () => {
   }
 
   return (
-    <div className="relative text-white bg-transparent ">
-      <h1 className="mb-10 text-2xl font-bold text-center">Cart Items</h1>
-      <div className="justify-center max-w-5xl px-6 mx-auto md:flex md:space-x-6 xl:px-0">
+    <div className="relative mt-10 text-white bg-transparent ">
+      <h1 className="mb-10 text-2xl font-bold text-center ">Cart Items</h1>
+      <div className="flex flex-col-reverse justify-center gap-5 px-6 md:flex-row lg:mx-20 md:flex md:space-x-6 xl:px-0">
         {cartItems.length !== 0 ? (
           <div className="rounded-lg ">
             {cartItems.map((cart) => (
@@ -88,7 +88,7 @@ const CartPage: React.FC = () => {
         )}
 
         {cartItems.length !== 0 && (
-          <div className="mt-6 h-full rounded-lg border-2 border-dotted p-6 shadow-md md:mt-0 md:w-1/3 border-[#C07F00]/90">
+          <div className="mt-6 h-full min-w-80 rounded-lg border-2 border-dotted p-6 shadow-md md:mt-0 md:w-1/3 border-[#C07F00]/90">
             <div className="flex justify-between mb-2">
               <p className="">Subtotal</p>
               <p className="">{price - 4.99}</p>

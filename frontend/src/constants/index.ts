@@ -29,3 +29,13 @@ export interface CartItemProps extends CartItemInterface {
   deleteCart: (CartID:number) => void
 }
 
+
+export  interface LoginResponse {
+  status: number
+  accessToken: string
+}
+
+export interface LoginForm{
+  username:string
+  password:string
+}
