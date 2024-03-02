@@ -139,15 +139,16 @@ class AddressResponse(BaseModel):
 
 
 class AddressCreateResponse(BaseModel):
-    message: str = "Address created successfully"
+    AddressID: int
     door_no: str
     landmark: str = None
     pincode: str
 
 
 class AddressUpdateResponse(BaseModel):
-    message: str = "Address updated successfully"
-    address: AddressResponse
+    door_no: str
+    landmark: str = None
+    pincode: str
 
 
 class AddressDeleteResponse(BaseModel):

@@ -11,7 +11,7 @@ router = APIRouter(
 
 from fastapi import HTTPException, status
 
-@router.post("/")
+@router.post("/",response_model=schemas.AddressCreateResponse,status_code=status.HTTP_201_CREATED)
 async def create_new_address(address: schemas.AddressCreate, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     db_address = models.Address(
         door_no=address.door_no,
@@ -22,7 +22,7 @@ async def create_new_address(address: schemas.AddressCreate, db: Session = Depen
     db.add(db_address)
     db.commit()
     db.refresh(db_address)
-    return {"message": "Address created successfully"}, status.HTTP_201_CREATED
+    return db_address
 
   
   
@@ -56,17 +56,17 @@ async def update_existing_address(address_id:int,new_address: schemas.AddressUpd
      address = db.query(models.Address).filter(models.Address.AddressID == address_id).first()
     
      if address:
-        for key, value in new_address.dict().items():
+        for key, value in new_address.model_dump().items():
             setattr(address, key, value)
 
         db.commit()
         db.refresh(address)
-        return {"message": "Address updated successfully", "address": address}
+        return address
      else:
         raise HTTPException(status_code=404, detail="Address not found")
 
 
-@router.delete("/{address_id}")
+@router.delete("/{address_id}",status_code=status.HTTP_204_NO_CONTENT)
 async def delete_existing_address(address_id: int, db: Session = Depends(get_db), current_user: dict = Depends(oauth2.get_current_user)):
     address = db.query(models.Address).filter(models.Address.AddressID == address_id and models.Address.UserID==current_user.id).first()
 

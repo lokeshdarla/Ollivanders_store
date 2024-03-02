@@ -2,13 +2,10 @@ from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from app.main import app
 from app.config import settings
 from app.database import get_db, Base
 from app.oauth2 import create_access_token
-from app import models
-
 SQLALCHEMY_DATABASE_URL = (
     f'postgresql://{settings.DATABASE_USERNAME}:{settings.DATABASE_PASSWORD}'
     f'@{settings.DATABASE_HOSTNAME}/{settings.DATABASE_NAME}_test'
@@ -76,23 +73,35 @@ def authorized_client(client, token):
     return client
 
 
+@pytest.fixture()
+def test_product(client):
+    product_data={
+    "ProductName": "Test Product",
+    "Description": "Test Product Description", 
+    "Price": 4349.00, 
+    "units": 12, 
+    "ImageURL":"img.com"
+    }
+    res=client.post("/products",json=product_data)
+    assert res.status_code==201
+    new_product=res.json()
+    return new_product
+
+
+@pytest.fixture()
+def test_address(authorized_client):
+    address_data={
+    "door_no": "24-10-15",
+    "landmark": "SRM University",
+    "pincode": "4235145"
+    }
+    res=authorized_client.post("/addresses/",json=address_data)
+    assert res.status_code==201
+    return res.json()
+
 def test_root(client):
     res = client.get("/")
     assert res.status_code == 200
     assert res.json() == {"message": "Hello World"}
-    
-def test_user_creation(client):
-    user_data = {
-        "username": "testuser",
-        "email": "test_user@gmail.com",
-        "password": "password123",
-        "is_admin": False,
-    }
-    res = client.post("/users/", json=user_data)
-
-    assert res.status_code == 201
-
-    new_user = res.json()
-    new_user['password'] = user_data['password']
 
 
