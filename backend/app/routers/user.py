@@ -10,9 +10,8 @@ router = APIRouter(
     tags=["Users"]
 )
 
-from typing import Optional
 
-@router.get("/", response_model=schemas.UserOut)
+@router.get("/details", response_model=schemas.UserOut)
 def get_user_by_id(current_user:dict = Depends(oauth2.get_current_user), db: Session = Depends(get_db)):
     user = db.query(models.User).filter_by(id=current_user.id, is_admin=False).first()
     
@@ -27,14 +26,14 @@ def get_user_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User Not Found")
     return user
 
-@router.post("/")
+@router.post("/",status_code=status.HTTP_201_CREATED,response_model=schemas.UserOut)
 def add_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     user.password = utils.hash(user.password)
-    new_user = models.User(**user.dict())
+    new_user = models.User(**user.model_dump())
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    return {"detail": "Signup Successful"}
+    return new_user
 
 @router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(db: Session = Depends(get_db), current_user:dict= Depends(oauth2.get_current_user)):
@@ -53,7 +52,7 @@ def update_user(
 ):
     user = db.query(models.User).filter_by(id=current_user.id).first()
     if user:
-        for field, value in new_user.dict().items():
+        for field, value in new_user.model_dump().items():
             setattr(user, field, value)
         db.commit()
         db.refresh(user)

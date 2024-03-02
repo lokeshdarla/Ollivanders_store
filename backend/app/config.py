@@ -1,6 +1,8 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings,SettingsConfigDict
+from pydantic import ConfigDict
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", case_sensitive=True)
     DATABASE_HOSTNAME: str
     DATABASE_PORT: str
     DATABASE_PASSWORD: str
@@ -15,8 +17,5 @@ class Settings(BaseSettings):
     CLIENT_BASE_URL:str
     STRIPE_API_KEY:str
     STRIPE_SECRET_KEY:str
-
-    class Config:
-        env_file = '.env'
 
 settings=Settings()

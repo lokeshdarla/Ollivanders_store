@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 from typing import Optional
 from datetime import datetime
 from fastapi import UploadFile
@@ -20,7 +20,13 @@ class UserOut(BaseModel):
     username: str
     email: str
     created_at: datetime
-    id: UUID  # Assuming user_id is of type UUID in your User model
+    id: UUID 
+
+class SignupSuccessResponse(BaseModel):
+    userId: str
+    username: str
+    email: EmailStr
+    message: str
 
 class UserLogin(BaseModel):
     username: str
@@ -28,6 +34,7 @@ class UserLogin(BaseModel):
 
 class Token(BaseModel):
     accessToken: str
+    token_type: str
 
 class TokenData(BaseModel):
     id: UUID  # Assuming id is of type UUID in your User model
